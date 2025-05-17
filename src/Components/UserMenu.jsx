@@ -5,12 +5,12 @@ import { useAppContext } from "../Context/AppContext";
 
 const calculateScore = (gameId, attempts, WW) => {
   if(!WW){return 0}
-  if (gameId === 1) {
+  if (gameId === 0) {
     // Train game: 500 points for ≤6 attempts, -50 per attempt after
     if (attempts <= 6) return 500;
     const score = 500 - (attempts - 6) * 50;
     return Math.max(score, 0);
-  } else if (gameId === 2) {
+  } else if (gameId === 1) {
     // Egg game: 500 points for ≤14 attempts, -20 per attempt after
     console.log("SCORING: ",attempts, gameId )
     if (attempts <= 14) return 500;
@@ -34,9 +34,9 @@ export const UserMenu = () => {
   const { userId, nickname } = useAppContext();
 
   const games = [
-    { name: "Плацкартный вагон", id: 1 },
-    { name: "Яички", id: 2 },
-    { name: "ВАдим балахонов", id: 3 },
+    { name: "Плацкартный вагон", id: 0 },
+    { name: "Яички", id: 1 },
+    { name: "ВАдим балахонов", id: 2 },
   ];
 
   const startGame = (gameId) => {
@@ -158,7 +158,7 @@ export const UserMenu = () => {
         </div>
       )}
 
-      {chosenGame === 1 && (
+      {chosenGame === 0 && (
         <MainMenu
           gameScores={gameScores}
           score={score}
@@ -168,7 +168,7 @@ export const UserMenu = () => {
           startGame={startGame}
           restartGame={restartGame}
           goToMenu={goToMenu}
-          handleGameOver={(win, score) => handleGameOver(win, score, 1)}
+          handleGameOver={(win, score) => handleGameOver(win, score, 0)}
           isGameOver={isGameOver}
           isGameStarted={isGameStarted}
           totalSeats={totalSeats}
@@ -176,7 +176,7 @@ export const UserMenu = () => {
         />
       )}
 
-      {chosenGame === 2 && (
+      {chosenGame === 1 && (
         <EggDropGame
           gameScores={gameScores}
           score={score}
@@ -186,7 +186,7 @@ export const UserMenu = () => {
           startGame={startGame}
           restartGame={restartGame}
           goToMenu={goToMenu}
-          handleGameOver={(win, score) => handleGameOver(win, score, 2)}
+          handleGameOver={(win, score) => handleGameOver(win, score, 1)}
           isGameOver={isGameOver}
           isGameStarted={isGameStarted}
         />
