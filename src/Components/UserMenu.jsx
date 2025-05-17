@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MainMenu } from "./vagonGame/MainMenu";
 import { useAppContext } from "../Context/AppContext";
 const calhScore=(score)=>{
@@ -19,7 +19,7 @@ export const UserMenu=()=>{
   const [isGameOver, setIsGameOver] = useState(false);
   const [resScore, setResScore] = useState(0);
   const [finalScore, setFinalScore] = useState(0);
-  const [gameScores, setGameScores] = useState({});
+  const [gameScores, setGameScores] = useState({train:{max:0, prev:0}});
   const [chosenGame, setChosenGame] = useState(null);
   const [totalSeats, setTotalSeats] = useState(54)
   const [isWin, setIsWin] = useState(false);
@@ -56,6 +56,7 @@ export const UserMenu=()=>{
     setScore(0)
   }
   const handleGameOver = (win, score) => {
+    console.log("WW: ", win)
     setIsWin(win);
     setIsGameOver(true);
     console.log("SCORE:", score)
@@ -63,7 +64,7 @@ export const UserMenu=()=>{
     if (win && score >= 0) {
       setGameScores((prev) => {
         console.log("PREV:", prev)
-        setFinalScore(p=> p - prev + Math.max(calhScore(score), prev?.train?.max || 0))
+        setFinalScore(p=> calhScore(score)) // Math.max(calhScore(score), prev?.train?.max || 0)
         return ({ ...prev, train: {
           max:Math.max(calhScore(score), prev?.train?.max || 0),
           prev:calhScore(score)
@@ -96,6 +97,9 @@ export const UserMenu=()=>{
     req()
 
   };
+  useEffect(()=>{
+    console.log(gameScores[getGameName[1]])
+  }, [])
   return(
     <>
     {!isGameStarted && !isGameOver &&(
@@ -123,7 +127,7 @@ export const UserMenu=()=>{
     </div>
     )}
     
-    {chosenGame==1 && (<MainMenu gameScores={gameScores} score={score} setScore = {setScore} finalScore={finalScore} startGame = {startGame} restartGame={restartGame} goToMenu = {goToMenu} handleGameOver={handleGameOver} isGameOver={isGameOver} isGameStarted={isGameStarted} totalSeats={totalSeats} setFinalScore={setFinalScore}/>)}
+    {chosenGame==1 && (<MainMenu isWin = {isWin}gameScores={gameScores} score={score} setScore = {setScore} finalScore={finalScore} startGame = {startGame} restartGame={restartGame} goToMenu = {goToMenu} handleGameOver={handleGameOver} isGameOver={isGameOver} isGameStarted={isGameStarted} totalSeats={totalSeats} setFinalScore={setFinalScore}/>)}
 
 
 

@@ -1,4 +1,10 @@
+import { useEffect } from "react";
+
 export const GameOver = ({ score, onRestart, isWin, goToMenu }) => {
+  useEffect(()=>{
+    console.log("isWin", isWin)
+  })
+  
   return (
     <div className="p-4 max-w-fit mx-auto text-center">
       <h1 className="text-xl font-bold mb-4">Игра окончена</h1>
