@@ -66,10 +66,10 @@ export const Carriage = ({ totalSeats, setScore, setIsGameOver, score }) => {
   const handleInputSubmit = () => {
     const match = inputValue.match(/^([+-])(\d+)$/);
     if (!match) return;
-
+    console.log(match)
     const direction = match[1];
     const steps = parseInt(match[2], 10);
-    let newSeat = direction === '+' ? currentSeat + steps : currentSeat - steps;
+    let newSeat = direction === '+' ? currentSeat + steps : currentSeat - steps; // куда идем
 
     let boundaryPenalty = 0;
     if (newSeat < 1) {
@@ -87,8 +87,9 @@ export const Carriage = ({ totalSeats, setScore, setIsGameOver, score }) => {
 
     setCurrentSeat(newSeat);
     const seat = allSeats.find((s) => s.number === newSeat);
+    console.log("SEAT", seat)
     if (seat) {
-      setHighlightedSeat(newSeat);
+      // setHighlightedSeat(newSeat);
       setHighlightType({ isUpper: seat.isUpper, isMainRow: seat.isMainRow });
 
       setTimeout(() => {
@@ -110,8 +111,9 @@ export const Carriage = ({ totalSeats, setScore, setIsGameOver, score }) => {
     if (isNaN(guess)) return;
     // answerSeat
     if (guess === answerSeat) {
+      console.log("UGADAl")
       setGuessResult('Поздравляем! Вы угадали место!');
-      setIsGameOver(true, true);
+      setIsGameOver(true, score);
     } else {
       setGuessResult('Неправильно');
       setScore((prev) => prev + 3);
@@ -124,8 +126,9 @@ export const Carriage = ({ totalSeats, setScore, setIsGameOver, score }) => {
 
   
   const handleStopGame = () => {
-    setScore(0);
-    setIsGameOver(true, false);
+    setScore((p)=>123);
+    setScore(123)
+    setIsGameOver(false, 123);
   };
 
  
@@ -160,7 +163,7 @@ export const Carriage = ({ totalSeats, setScore, setIsGameOver, score }) => {
     if (highlightedSeat === seat.number) return true;
     if (highlightType) {
       return (
-        (highlightType.isUpper === seat.isUpper) ||
+        (highlightType.isUpper === seat.isUpper) &&
         (highlightType.isMainRow === seat.isMainRow)
       );
     }

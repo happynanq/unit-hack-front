@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { GameMenu } from "./Components/GameMenu";
-import { Carriage } from "./Components/VAGON/Carriage";
-import { GameOver } from "./Components/GameOver";
+import { GameMenu } from "./Components/vagonGame/GameMenu";
+import { Carriage } from "./Components/vagonGame/VAGON/Carriage";
+import { GameOver } from "./Components/vagonGame/GameOver";
+import { useAppContext } from "./Context/AppContext";
 
 export const Games = () => {
   const [totalSeats, setTotalSeats] = useState(54);
@@ -9,10 +10,13 @@ export const Games = () => {
   const [isGameOver, setIsGameOver] = useState(false);
   const [isWin, setIsWin] = useState(false);
   const [score, setScore] = useState(0);
+  const [finalScore, setFinalScore] = useState(0);
   const [gameScores, setGameScores] = useState({});
-  const [userId] = useState('user123');
+  // const [userId] = useState('user123');
+  const {userId, nickname} = useAppContext()
 
   useEffect(() => {
+
     if (window.Telegram?.WebApp) {
       window.Telegram.WebApp.ready();
       window.Telegram.WebApp.expand();
@@ -28,23 +32,76 @@ export const Games = () => {
 
   const restartGame = () => {
     if (isWin && score > 0) {
-      setGameScores((prev) => ({ ...prev, train: score }));
+
+      setGameScores((prev) => ({ ...prev, train: finalScore }));
     }
     setIsGameStarted(true);
     setIsGameOver(false);
     setIsWin(false);
     setScore(0);
   };
-
-  const handleGameOver = (win) => {
+  const goToMenu = ()=>{
+    
+    console.log("GOT TO GAMES MENU")
+    setIsGameStarted(false)
+    setIsGameOver(false)
+    setIsWin(false)
+    setScore(0)
+  }
+  const calhScore=(score)=>{
+    if(score <= 6){
+      return 500
+    }else if((score-6)*50 >= 500){
+      return 0
+    }else{
+      return 500 -(score - 6)*50
+    }
+  }
+  const handleGameOver = (win, score) => {
     setIsWin(win);
     setIsGameOver(true);
+    console.log("SCORE:", score)
+    setFinalScore(calhScore(score))
+    if (win && score >= 0) {
+      setGameScores((prev) => {
+        console.log("PREV:", prev)
+        return ({ ...prev, train: {
+          max:Math.max(calhScore(score), prev?.train?.max || 0),
+          prev:calhScore(score)
+        } }
+      )});
+
+    }
+
+    // ! API HERE
+    const req = async()=>{
+      await fetch("http://5.35.80.93:8000/result", {
+        method:"POST",
+        body:JSON.stringify({
+          userId, nickname, score:calhScore(score), gameId:1
+        }),
+        headers:{
+          "Content-Type":"application/json"
+        }
+      }).then(r=>{
+        if(!r.ok){
+          throw new Error("SOME POST ERROR")
+        }
+        return r.json()
+      }).then(r=>{
+        console.log("RES FROM POST: ",r )
+      }).catch(e=>{
+        console.error(e)
+      })
+    }
+    req()
+
   };
 
   return (
     <div className="container p-2 max-w-fit mx-auto">
       {!isGameStarted && !isGameOver && (
-        <GameMenu userId={userId} gameScores={gameScores} onStart={startGame} />
+        <GameMenu userId={userId} gameScores={gameScores} onStart={startGame} nickname={nickname} />
       )}
       {isGameStarted && !isGameOver && (
         <>
@@ -68,7 +125,7 @@ export const Games = () => {
         </>
       )}
       {isGameOver && (
-        <GameOver score={score} onRestart={restartGame} isWin={isWin} />
+        <GameOver score={finalScore} onRestart={restartGame} isWin={isWin} goToMenu={goToMenu}/>
       )}
     </div>
   );
