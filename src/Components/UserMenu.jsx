@@ -3,7 +3,8 @@ import { MainMenu } from "./vagonGame/MainMenu";
 import { EggDropGame } from "./EggGame/EggDropGame";
 import { useAppContext } from "../Context/AppContext";
 
-const calculateScore = (gameId, attempts) => {
+const calculateScore = (gameId, attempts, WW) => {
+  if(!WW){return 0}
   if (gameId === 1) {
     // Train game: 500 points for ≤6 attempts, -50 per attempt after
     if (attempts <= 6) return 500;
@@ -11,6 +12,7 @@ const calculateScore = (gameId, attempts) => {
     return Math.max(score, 0);
   } else if (gameId === 2) {
     // Egg game: 500 points for ≤14 attempts, -20 per attempt after
+    console.log("SCORING: ",attempts, gameId )
     if (attempts <= 14) return 500;
     const score = 500 - (attempts - 14) * 20;
     return Math.max(score, 0);
@@ -84,9 +86,9 @@ export const UserMenu = () => {
   const handleGameOver = (win, attempts, gameId) => {
     setIsWin(win);
     setIsGameOver(true);
-    const calculatedScore = calculateScore(gameId, attempts);
+    const calculatedScore = calculateScore(gameId, attempts, win);
     setFinalScore(calculatedScore);
-
+    console.log("calculatedScore", calculatedScore)
     if (win && calculatedScore > 0) {
       setGameScores((prev) => ({
         ...prev,

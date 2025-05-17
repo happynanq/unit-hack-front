@@ -18,10 +18,10 @@ export const GameOver = ({ score, onRestart, isWin, goToMenu }) => {
         Начать заново
       </button>
       <button
-        className="px-4 py-2 rounded bg-blue-500 text-white text-lg"
+        className="px-4 py-2 rounded bg-gray-500 text-white text-lg"
         onClick={goToMenu}
       >
-        в главное меню
+        В главное меню
       </button>
     </div>
   );

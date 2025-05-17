@@ -109,27 +109,25 @@ export const Carriage = ({ totalSeats, setScore, setIsGameOver, score }) => {
   const handleGuessSubmit = () => {
     const guess = parseInt(guessValue, 10);
     if (isNaN(guess)) return;
-    // answerSeat
     if (guess === answerSeat) {
-      console.log("UGADAl")
-      setGuessResult('Поздравляем! Вы угадали место!');
-      setIsGameOver(true, score);
+      console.log("UGADAl");
+      setGuessResult("Поздравляем! Вы угадали место!");
+      setIsGameOver(true, score); // Pass score as attempts
     } else {
-      setGuessResult('Неправильно');
+      setGuessResult("Неправильно");
       setScore((prev) => prev + 3);
       setTimeout(() => {
-        setGuessResult('');
+        setGuessResult("");
       }, 3000);
     }
-    setGuessValue('');
+    setGuessValue("");
   };
 
-  
   const handleStopGame = () => {
-    setScore((p)=>123);
-    setScore(123)
-    setIsGameOver(false, 123);
+    setIsGameOver(false, score); // Pass score as attempts
   };
+
+
 
  
   const handleSeatClick = (number, isUpper, isMainRow) => {
