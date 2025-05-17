@@ -1,137 +1,194 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MainMenu } from "./vagonGame/MainMenu";
+import { EggDropGame } from "./EggGame/EggDropGame";
 import { useAppContext } from "../Context/AppContext";
-const calhScore=(score)=>{
-    if(score <= 6){
-      return 500
-    }else if((score-6)*50 >= 500){
-      return 0
-    }else{
-      return 500 -(score - 6)*50
-    }
+
+const calculateScore = (gameId, attempts) => {
+  if (gameId === 1) {
+    // Train game: 500 points for ≤6 attempts, -50 per attempt after
+    if (attempts <= 6) return 500;
+    const score = 500 - (attempts - 6) * 50;
+    return Math.max(score, 0);
+  } else if (gameId === 2) {
+    // Egg game: 500 points for ≤14 attempts, -20 per attempt after
+    if (attempts <= 14) return 500;
+    const score = 500 - (attempts - 14) * 20;
+    return Math.max(score, 0);
   }
+  return 0;
+};
 
+const getGameName = { 1: "train", 2: "eggs" };
 
-const getGameName = {1:"train", 2:"eggs"}
-
-export const UserMenu=()=>{
+export const UserMenu = () => {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
-  const [resScore, setResScore] = useState(0);
   const [finalScore, setFinalScore] = useState(0);
-  const [gameScores, setGameScores] = useState({train:{max:0, prev:0}});
+  const [gameScores, setGameScores] = useState({});
   const [chosenGame, setChosenGame] = useState(null);
-  const [totalSeats, setTotalSeats] = useState(54)
+  const [totalSeats, setTotalSeats] = useState(54);
   const [isWin, setIsWin] = useState(false);
-  const [score, setScore] = useState(0)
-  const {userId, nickname} = useAppContext()
-  const games = [{name:"Плацкартный вагон", id:1}, 
-    {name:"Яички", id:2}, 
-    {name:"ВАдим балахонов", id:3}
-  ]
+  const [score, setScore] = useState(0);
+  const { userId, nickname } = useAppContext();
+
+  const games = [
+    { name: "Плацкартный вагон", id: 1 },
+    { name: "Яички", id: 2 },
+    { name: "ВАдим балахонов", id: 3 },
+  ];
+
   const startGame = (gameId) => {
-    setChosenGame(gameId)
+    setChosenGame(gameId);
     setIsGameStarted(true);
     setIsGameOver(false);
     setIsWin(false);
     setScore(0);
+    setFinalScore(0);
   };
 
   const restartGame = () => {
-    if (isWin && score > 0) {
-
-      setGameScores((prev) => ({ ...prev, train: finalScore }));
+    if (isWin && finalScore > 0) {
+      setGameScores((prev) => ({
+        ...prev,
+        [getGameName[chosenGame]]: {
+          max: Math.max(finalScore, prev?.[getGameName[chosenGame]]?.max || 0),
+          prev: finalScore,
+        },
+      }));
     }
     setIsGameStarted(true);
     setIsGameOver(false);
     setIsWin(false);
     setScore(0);
+    setFinalScore(0);
   };
-  const goToMenu = ()=>{
-    
-    console.log("GOT TO GAMES MENU")
-    setIsGameStarted(false)
-    setIsGameOver(false)
-    setIsWin(false)
-    setScore(0)
-  }
-  const handleGameOver = (win, score) => {
-    console.log("WW: ", win)
+
+  const goToMenu = () => {
+    if (isWin && finalScore > 0) {
+      setGameScores((prev) => ({
+        ...prev,
+        [getGameName[chosenGame]]: {
+          max: Math.max(finalScore, prev?.[getGameName[chosenGame]]?.max || 0),
+          prev: finalScore,
+        },
+      }));
+    }
+    setIsGameStarted(false);
+    setIsGameOver(false);
+    setIsWin(false);
+    setScore(0);
+    setFinalScore(0);
+    setChosenGame(null);
+  };
+
+  const handleGameOver = (win, attempts, gameId) => {
     setIsWin(win);
     setIsGameOver(true);
-    console.log("SCORE:", score)
-    setFinalScore(calhScore(score))
-    if (win && score >= 0) {
-      setGameScores((prev) => {
-        console.log("PREV:", prev)
-        setFinalScore(p=> calhScore(score)) // Math.max(calhScore(score), prev?.train?.max || 0)
-        return ({ ...prev, train: {
-          max:Math.max(calhScore(score), prev?.train?.max || 0),
-          prev:calhScore(score)
-        } }
-      )});
+    const calculatedScore = calculateScore(gameId, attempts);
+    setFinalScore(calculatedScore);
 
+    if (win && calculatedScore > 0) {
+      setGameScores((prev) => ({
+        ...prev,
+        [getGameName[gameId]]: {
+          max: Math.max(calculatedScore, prev?.[getGameName[gameId]]?.max || 0),
+          prev: calculatedScore,
+        },
+      }));
     }
 
-    // ! API HERE
-    const req = async()=>{
-      await fetch("http://5.35.80.93:8000/result", {
-        method:"POST",
-        body:JSON.stringify({
-          userId, nickname, score:calhScore(score), gameId:1
-        }),
-        headers:{
-          "Content-Type":"application/json"
+    // API call
+    const req = async () => {
+      try {
+        const response = await fetch("http://5.35.80.93:8000/result", {
+          method: "POST",
+          body: JSON.stringify({
+            userId,
+            nickname,
+            score: calculatedScore,
+            gameId,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error("API POST error");
         }
-      }).then(r=>{
-        if(!r.ok){
-          throw new Error("SOME POST ERROR")
-        }
-        return r.json()
-      }).then(r=>{
-        console.log("RES FROM POST: ",r )
-      }).catch(e=>{
-        console.error(e)
-      })
-    }
-    req()
-
+        const result = await response.json();
+        console.log("API response:", result);
+      } catch (e) {
+        console.error("API error:", e);
+      }
+    };
+    req();
   };
-  useEffect(()=>{
-    console.log(gameScores[getGameName[1]])
-  }, [])
-  return(
+
+  // Calculate total score
+  const totalScore = Object.values(gameScores).reduce(
+    (sum, game) => sum + (game?.max || 0),
+    0
+  );
+
+  return (
     <>
-    {!isGameStarted && !isGameOver &&(
-      <div className="p-4 max-w-fit mx-auto text-center">
-      <h1 className="text-xl font-bold mb-4">Игры</h1>
-      <div className="mb-4 text-lg">Пользователь: {nickname}</div>
-      {games.map(game=>(
-        <div className="mb-10 " key ={game.id}>
-          {/* // ! ПОЛУЧАЮ МАКСИМУМАЛЬНЫЙ СЧЕТ В ИГРЕ */}
-          {gameScores.hasOwnProperty(getGameName[game.id]) && (
-            <div>Счет: {gameScores[getGameName[game.id]].max} </div>
+      {!isGameStarted && !isGameOver && (
+        <div className="p-4 max-w-fit mx-auto text-center">
+          <h1 className="text-xl font-bold mb-4">Игры</h1>
+          <div className="mb-4 text-lg">Пользователь: {nickname}</div>
+          {totalScore > 0 && (
+            <div className="mb-4 text-lg">Общий счёт: {totalScore}</div>
           )}
-          <h2 className="text-lg font-semibold">{game.name}</h2>
-          
-          <button
-          className="px-4 py-2 rounded bg-blue-500 text-white text-lg"
-          onClick={()=>{
-            startGame(game.id)
-          }}
-          >
-            Начать
-          </button>
+          {games.map((game) => (
+            <div className="mb-10" key={game.id}>
+              {gameScores.hasOwnProperty(getGameName[game.id]) && (
+                <div>Счёт: {gameScores[getGameName[game.id]].max}</div>
+              )}
+              <h2 className="text-lg font-semibold">{game.name}</h2>
+              <button
+                className="px-4 py-2 rounded bg-blue-500 text-white text-lg"
+                onClick={() => startGame(game.id)}
+              >
+                Начать
+              </button>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-    )}
-    
-    {chosenGame==1 && (<MainMenu isWin = {isWin}gameScores={gameScores} score={score} setScore = {setScore} finalScore={finalScore} startGame = {startGame} restartGame={restartGame} goToMenu = {goToMenu} handleGameOver={handleGameOver} isGameOver={isGameOver} isGameStarted={isGameStarted} totalSeats={totalSeats} setFinalScore={setFinalScore}/>)}
+      )}
 
+      {chosenGame === 1 && (
+        <MainMenu
+          gameScores={gameScores}
+          score={score}
+          setScore={setScore}
+          finalScore={finalScore}
+          setFinalScore={setFinalScore}
+          startGame={startGame}
+          restartGame={restartGame}
+          goToMenu={goToMenu}
+          handleGameOver={(win, score) => handleGameOver(win, score, 1)}
+          isGameOver={isGameOver}
+          isGameStarted={isGameStarted}
+          totalSeats={totalSeats}
+          isWin={isWin}
+        />
+      )}
 
-
+      {chosenGame === 2 && (
+        <EggDropGame
+          gameScores={gameScores}
+          score={score}
+          setScore={setScore}
+          finalScore={finalScore}
+          setFinalScore={setFinalScore}
+          startGame={startGame}
+          restartGame={restartGame}
+          goToMenu={goToMenu}
+          handleGameOver={(win, score) => handleGameOver(win, score, 2)}
+          isGameOver={isGameOver}
+          isGameStarted={isGameStarted}
+        />
+      )}
     </>
-  
-  )
-}
+  );
+};
