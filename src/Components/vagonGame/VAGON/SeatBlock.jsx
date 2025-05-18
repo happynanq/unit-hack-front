@@ -3,11 +3,11 @@ import { Seat } from "./Seat";
 export const SeatBlock = ({ seats, onSeatClick, isSelected, isHighlighted, isMainRow, className }) => {
   const renderSeats = () => {
     if (isMainRow) {
-      const upperSeats = seats.slice(0, 2);
-      const lowerSeats = seats.slice(2, 4);
+      const upperSeats = seats.slice(0, 2); // Top pair
+      const lowerSeats = seats.slice(2, 4); // Bottom pair
       return (
-        <div className="flex flex-col">
-          <div className="flex flex-row">
+        <div className="flex flex-col gap-y-2 h-full">
+          <div className="flex flex-row gap-x-1">
             {upperSeats.map((seat) => (
               <Seat
                 key={seat.number}
@@ -17,10 +17,12 @@ export const SeatBlock = ({ seats, onSeatClick, isSelected, isHighlighted, isMai
                 isSelected={isSelected(seat)}
                 isHighlighted={isHighlighted(seat)}
                 onClick={onSeatClick}
+                className="flex-1" // Fill width
               />
             ))}
           </div>
-          <div className="flex flex-row">
+          <div className="table" aria-hidden="true"></div> {/* Left-aligned table */}
+          <div className="flex flex-row gap-x-1">
             {lowerSeats.map((seat) => (
               <Seat
                 key={seat.number}
@@ -30,6 +32,7 @@ export const SeatBlock = ({ seats, onSeatClick, isSelected, isHighlighted, isMai
                 isSelected={isSelected(seat)}
                 isHighlighted={isHighlighted(seat)}
                 onClick={onSeatClick}
+                className="flex-1" // Fill width
               />
             ))}
           </div>
@@ -37,7 +40,7 @@ export const SeatBlock = ({ seats, onSeatClick, isSelected, isHighlighted, isMai
       );
     } else {
       return (
-        <div className={`flex flex-col ${className}`}>
+        <div className={`flex flex-col h-full justify-between ${className}`}>
           {seats.map((seat) => (
             <Seat
               key={seat.number}
@@ -55,7 +58,7 @@ export const SeatBlock = ({ seats, onSeatClick, isSelected, isHighlighted, isMai
   };
 
   return (
-    <div className="border border-gray-600 rounded-lg p-1 m-1 bg-gray-800 bg-opacity-50">
+    <div className={`seat-block ${isMainRow ? 'main-row' : 'side-row'}`}>
       {renderSeats()}
     </div>
   );

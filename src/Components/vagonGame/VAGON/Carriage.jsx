@@ -87,8 +87,8 @@ export const Carriage = ({ userPlayed, totalSeats, setScore, setIsGameOver, scor
     setCurrentSeat(newSeat);
     const seat = allSeats.find((s) => s.number === newSeat);
     if (seat) {
-      setHighlightedSeat(newSeat); // Highlight the specific seat
-      setHighlightType({ isUpper: seat.isUpper, isMainRow: seat.isMainRow }); // Highlight matching type
+      setHighlightedSeat(newSeat);
+      setHighlightType({ isUpper: seat.isUpper, isMainRow: seat.isMainRow });
       setTimeout(() => {
         setHighlightedSeat(null);
         setHighlightType(null);
@@ -123,7 +123,6 @@ export const Carriage = ({ userPlayed, totalSeats, setScore, setIsGameOver, scor
   };
 
   const handleSeatClick = (number, isUpper, isMainRow) => {
-    console.log("number", number)
     const newSelected = new Set(selectedSeats);
     if (newSelected.has(number)) {
       newSelected.delete(number);
@@ -138,9 +137,7 @@ export const Carriage = ({ userPlayed, totalSeats, setScore, setIsGameOver, scor
   };
 
   const isSeatSelected = (seat) => {
-    // Prioritize individual seat selection
     if (selectedSeats.has(seat.number)) return true;
-    // Then check type-based selection
     if (selectedTypes.upper && seat.isUpper) return true;
     if (selectedTypes.lower && !seat.isUpper) return true;
     if (selectedTypes.mainRow && seat.isMainRow) return true;
@@ -149,10 +146,7 @@ export const Carriage = ({ userPlayed, totalSeats, setScore, setIsGameOver, scor
   };
 
   const isSeatHighlighted = (seat) => {
-    console.log("SEAT: ", seat)
-    // Highlight specific seat if it matches highlightedSeat
     if (highlightedSeat === seat.number) return true;
-    // Highlight seats matching the type (main/side, upper/lower)
     if (highlightType) {
       return (
         highlightType.isUpper === seat.isUpper &&
@@ -297,37 +291,48 @@ export const Carriage = ({ userPlayed, totalSeats, setScore, setIsGameOver, scor
           )}
         </AnimatePresence>
       </div>
-      <div className="flex flex-col md:flex-row gap-4 max-w-full justify-center">
-        <div className="flex-1 min-w-0">
-          <h2 className="text-lg font-semibold mb-2 text-indigo-300 text-left">Главный ряд</h2>
-          <div className="flex flex-col">
-            {mainBlocks.map((block, index) => (
-              <SeatBlock
-                key={index}
-                seats={block}
-                onSeatClick={handleSeatClick}
-                isSelected={isSeatSelected}
-                isHighlighted={isSeatHighlighted}
-                isMainRow={true}
-              />
-            ))}
+      <div className="carriage-container flex flex-col gap-4">
+        {/* Top Tambour */}
+        <div className="tambour">
+          Вход (Тамбур)
+        </div>
+        <div className="flex flex-row gap-0.5 justify-center">
+          <div className="main-row-container">
+            <h2 className="text-lg font-semibold mb-2 text-indigo-300 text-left m-1">Главный ряд</h2>
+            <div className="flex flex-col">
+              {mainBlocks.map((block, index) => (
+                <SeatBlock
+                  key={index}
+                  seats={block}
+                  onSeatClick={handleSeatClick}
+                  isSelected={isSeatSelected}
+                  isHighlighted={isSeatHighlighted}
+                  isMainRow={true}
+                />
+              ))}
+            </div>
+          </div>
+          <div className="corridor"></div> {/* Wider corridor */}
+          <div className="side-row-container">
+            <h2 className="text-lg font-semibold mb-2 text-indigo-300 text-center m-1">Боковой</h2>
+            <div className="flex flex-col">
+              {sideBlocks.map((block, index) => (
+                <SeatBlock
+                  key={index}
+                  seats={block}
+                  onSeatClick={handleSeatClick}
+                  isSelected={isSeatSelected}
+                  isHighlighted={isSeatHighlighted}
+                  isMainRow={false}
+                  className="flex-row-reverse"
+                />
+              ))}
+            </div>
           </div>
         </div>
-        <div className="w-24 min-w-0 shrink">
-          <h2 className="text-lg font-semibold mb-2 text-indigo-300 text-center">Боковой</h2>
-          <div className="flex flex-col items-center">
-            {sideBlocks.map((block, index) => (
-              <SeatBlock
-                key={index}
-                seats={block}
-                onSeatClick={handleSeatClick}
-                isSelected={isSeatSelected}
-                isHighlighted={isSeatHighlighted}
-                isMainRow={false}
-                className="flex-row-reverse"
-              />
-            ))}
-          </div>
+        {/* Bottom Tambour */}
+        <div className="tambour">
+          Вход (Тамбур)
         </div>
       </div>
     </div>
