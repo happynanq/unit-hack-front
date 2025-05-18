@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export const GameOver = ({ score, onRestart, isWin, goToMenu }) => {
+export const GameOver = ({ userPlayed, score, onRestart, isWin, goToMenu }) => {
   useEffect(()=>{
     console.log("isWin", isWin)
   })
@@ -11,18 +11,23 @@ export const GameOver = ({ score, onRestart, isWin, goToMenu }) => {
       <div className="mb-4 text-lg">
         {isWin ? `Поздравляем! Ваш счёт: ${score}` : 'Вы проиграли!'}
       </div>
-      <button
-        className="px-4 py-2 rounded bg-blue-500 text-white text-lg"
-        onClick={onRestart}
-      >
-        Начать заново
-      </button>
-      <button
-        className="px-4 py-2 rounded bg-gray-500 text-white text-lg"
-        onClick={goToMenu}
-      >
-        В главное меню
-      </button>
+      <p>Сыграно: {userPlayed[0] || 0}/3</p>
+          <div className="mt-4">
+            {userPlayed[0] < 3 && (
+              <button
+                onClick={onRestart}
+                className="px-4 py-2 bg-green-500 text-white rounded mr-2"
+              >
+                Переиграть
+              </button>
+            )}
+            <button
+              onClick={goToMenu}
+              className="px-4 py-2 bg-gray-500 text-white rounded"
+            >
+              В меню
+            </button>
+          </div>
     </div>
   );
 };

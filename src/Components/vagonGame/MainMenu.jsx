@@ -17,9 +17,11 @@ export const MainMenu = ({
   setFinalScore,
   isGameOver,
   isGameStarted,
+  userPlayed
+  
 })=>{
   
-  const {userId, nickname} = useAppContext()
+  // const {userId, nickname} = useAppContext()
 
   
 
@@ -28,11 +30,13 @@ export const MainMenu = ({
     {isGameStarted && !isGameOver && (
       <>
         <div className="mb-2">
+          
           <label className="block mb-1 text-sm">
-            Общее количество мест: {totalSeats}
+            {/* Общее количество мест: {totalSeats} */}
           </label>
         </div>
         <Carriage
+          userPlayed={userPlayed}
           totalSeats={totalSeats}
           setScore={setScore}
           setIsGameOver={handleGameOver}
@@ -42,6 +46,7 @@ export const MainMenu = ({
     )}
     {isGameOver && (
       <GameOver
+        userPlayed={userPlayed}
         score={finalScore}
         onRestart={restartGame}
         isWin={isWin}

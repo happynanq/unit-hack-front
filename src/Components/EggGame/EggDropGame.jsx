@@ -12,6 +12,7 @@ export const EggDropGame = ({
   isGameOver,
   isGameStarted,
   gameScores,
+  userPlayed
 }) => {
   const [eggs, setEggs] = useState(2);
   const [attempts, setAttempts] = useState(0);
@@ -187,18 +188,24 @@ export const EggDropGame = ({
             <p>Лучший результат: {gameScores.eggs.max}</p>
           )}
           <div className="mt-4">
-            <button
-              onClick={restartGame}
-              className="px-4 py-2 bg-green-500 text-white rounded mr-2"
-            >
-              Переиграть
-            </button>
-            <button
+            <p>Сыграно: {userPlayed[1] || 0}/3</p>
+            <div className="mt-4">
+              {userPlayed[1] < 3 && (
+                <button
+                  onClick={restartGame}
+                  className="px-4 py-2 bg-green-500 text-white rounded mr-2"
+                >
+                  Переиграть
+                </button>
+              )}
+              <button
               onClick={goToMenu}
               className="px-4 py-2 bg-gray-500 text-white rounded"
             >
               В меню
             </button>
+            </div>
+            
           </div>
         </div>
       )}

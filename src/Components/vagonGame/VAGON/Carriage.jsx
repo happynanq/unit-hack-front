@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { SeatBlock } from "./SeatBlock";
 
-export const Carriage = ({ totalSeats, setScore, setIsGameOver, score }) => {
+export const Carriage = ({ userPlayed, totalSeats, setScore, setIsGameOver, score }) => {
   const [selectedTypes, setSelectedTypes] = useState({
     upper: false,
     lower: false,
@@ -172,7 +172,22 @@ export const Carriage = ({ totalSeats, setScore, setIsGameOver, score }) => {
     <div className="p-2 max-w-fit mx-auto border border-gray-300 rounded">
       <h1 className="text-xl font-bold mb-2 text-center">Плацкартный вагон, занадан: {answerSeat}</h1>
       {/* <h1 className="text-xl font-bold mb-2 text-center"> находимся на: {currentSeat}</h1> */}
-      <h1 className="text-xl font-bold mb-2 text-center"> находимся на: хуй там а не ответ</h1>
+      {/* <h1 className="text-xl font-bold mb-2 text-center"> находимся на: хуй там а не ответ</h1> */}
+      <div className="mb-4 text-left text-sm">
+          <h2 className="font-semibold">Правила:</h2>
+
+          <ul className="list-disc list-inside">
+              <li>В вагоне 54 места (1-36 - главные ряды, 37-54 - боковые).</li>
+              <li>Компьютер загадывает случайное место - ваша цель его угадать.</li>
+              <li>Используйте команды: "+n" (переместиться на n мест вперед) или "-n" (назад).</li>
+              <li>После перемещения вы увидите тип ряда (главный/боковой) и позицию (верхнее/нижнее).</li>
+              <li>Когда готовы угадать - введите "X" в поле предполагаемое место(где X - номер места).</li>
+              <li>Победа: если угадали загаданное место с первой попытки.</li>
+              <li>Поражение: если вышли за пределы вагона (1-54).</li>
+              <li>Очки: 500 за ≤6 попыток, -50 за каждую дополнительную попытку (минимум 0).</li>
+          </ul>
+          </div>
+      
       <div className="mb-2 text-lg font-semibold text-center">
         Баллы: {score}
       </div>

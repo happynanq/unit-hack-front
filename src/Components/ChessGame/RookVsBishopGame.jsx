@@ -12,6 +12,7 @@ export const RookVsBishopGame = ({
   handleGameOver,
   isGameOver,
   isGameStarted,
+  userPlayed
 }) => {
   const [board, setBoard] = useState({
     rook: "A1",
@@ -239,13 +240,16 @@ export const RookVsBishopGame = ({
           <p className="text-lg mb-2">Игра окончена!</p>
           <p>Финальный счёт: {finalScore}</p>
           {gameScores?.chess?.max > 0 && <p>Лучший результат: {gameScores.chess.max}</p>}
+          <p>Сыграно: {userPlayed[2] || 0}/3</p>
           <div className="mt-4">
-            <button
-              onClick={restartGame}
-              className="px-4 py-2 bg-green-500 text-white rounded mr-2"
-            >
-              Переиграть
-            </button>
+            {userPlayed[2] < 3 && (
+              <button
+                onClick={restartGame}
+                className="px-4 py-2 bg-green-500 text-white rounded mr-2"
+              >
+                Переиграть
+              </button>
+            )}
             <button
               onClick={goToMenu}
               className="px-4 py-2 bg-gray-500 text-white rounded"

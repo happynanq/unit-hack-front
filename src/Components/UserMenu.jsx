@@ -1,31 +1,32 @@
 import { useState } from "react";
 import { MainMenu } from "./vagonGame/MainMenu";
 import { EggDropGame } from "./EggGame/EggDropGame";
-import { useAppContext } from "../Context/AppContext";
 import { RookVsBishopGame } from "./ChessGame/RookVsBishopGame";
+import { MoonStoneGame } from "./StoneGame/MoonStoneGame";
+import { Prize } from "./Prize/Prize";
+import { useAppContext } from "../Context/AppContext";
 
 const calculateScore = (gameId, attempts, win) => {
   if (!win) return 0;
   if (gameId === 0) {
-    // Train game: 500 points for ≤6 attempts, -50 per attempt after
     if (attempts <= 6) return 500;
     const score = 500 - (attempts - 6) * 50;
     return Math.max(score, 0);
   } else if (gameId === 1) {
-    // Egg game: 500 points for ≤14 attempts, -20 per attempt after
     if (attempts <= 14) return 500;
     const score = 500 - (attempts - 14) * 20;
     return Math.max(score, 0);
   } else if (gameId === 2) {
-    // Chess game: 500 points for ≤6 attempts, -25 per attempt after
     if (attempts <= 6) return 500;
     const score = 500 - (attempts - 6) * 25;
     return Math.max(score, 0);
+  } else if (gameId === 3) {
+    return attempts; // Points for stones game (100, 200, 300)
   }
   return 0;
 };
 
-const getGameName = { 0: "train", 1: "eggs", 2: "chess" };
+const getGameName = { 0: "train", 1: "eggs", 2: "chess", 3: "stones" };
 
 export const UserMenu = () => {
   const [isGameStarted, setIsGameStarted] = useState(false);
@@ -36,14 +37,15 @@ export const UserMenu = () => {
   const [totalSeats, setTotalSeats] = useState(54);
   const [isWin, setIsWin] = useState(false);
   const [score, setScore] = useState(0);
-  const { userId, nickname } = useAppContext();
+  const [showPrize, setShowPrize] = useState(false);
+  const { userId, nickname, userPlayed, updateUserPlayed } = useAppContext();
 
   const games = [
-  { name: "Плацкартный вагон", id: 0 },
-  { name: "Яички", id: 1 },
-  { name: "Ладья против Слона", id: 2 },
-  { name: "Камешки", id: 3 },
-];
+    { name: "Плацкартный вагон", id: 0 },
+    { name: "Яички", id: 1 },
+    { name: "Ладья против Слона", id: 2 },
+    { name: "Камешки", id: 3 },
+  ];
 
   const startGame = (gameId) => {
     setChosenGame(gameId);
@@ -52,6 +54,7 @@ export const UserMenu = () => {
     setIsWin(false);
     setScore(0);
     setFinalScore(0);
+    setShowPrize(false);
   };
 
   const restartGame = () => {
@@ -69,6 +72,7 @@ export const UserMenu = () => {
     setIsWin(false);
     setScore(0);
     setFinalScore(0);
+    setShowPrize(false);
   };
 
   const goToMenu = () => {
@@ -87,6 +91,7 @@ export const UserMenu = () => {
     setScore(0);
     setFinalScore(0);
     setChosenGame(null);
+    setShowPrize(false);
   };
 
   const handleGameOver = (win, attempts, gameId) => {
@@ -94,7 +99,7 @@ export const UserMenu = () => {
     setIsGameOver(true);
     const calculatedScore = calculateScore(gameId, attempts, win);
     setFinalScore(calculatedScore);
-    console.log("calculatedScore", calculatedScore)
+    console.log("calculatedScore", calculatedScore);
     if (win && calculatedScore > 0) {
       setGameScores((prev) => ({
         ...prev,
@@ -105,7 +110,10 @@ export const UserMenu = () => {
       }));
     }
 
-    // API call
+    // Increment userPlayed for the game
+    updateUserPlayed(gameId);
+
+    // API call for score
     const req = async () => {
       try {
         const response = await fetch("http://5.35.80.93:8000/result", {
@@ -132,7 +140,6 @@ export const UserMenu = () => {
     req();
   };
 
-  // Calculate total score
   const totalScore = Object.values(gameScores).reduce(
     (sum, game) => sum + (game?.max || 0),
     0
@@ -140,7 +147,7 @@ export const UserMenu = () => {
 
   return (
     <>
-      {!isGameStarted && !isGameOver && (
+      {!isGameStarted && !isGameOver && !showPrize && (
         <div className="p-4 max-w-fit mx-auto text-center">
           <h1 className="text-xl font-bold mb-4">Игры</h1>
           <div className="mb-4 text-lg">Пользователь: {nickname}</div>
@@ -152,15 +159,26 @@ export const UserMenu = () => {
               {gameScores.hasOwnProperty(getGameName[game.id]) && (
                 <div>Счёт: {gameScores[getGameName[game.id]].max}</div>
               )}
+              <div>Сыграно: {userPlayed[game.id] || 0}/3</div>
               <h2 className="text-lg font-semibold">{game.name}</h2>
-              <button
-                className="px-4 py-2 rounded bg-blue-500 text-white text-lg"
-                onClick={() => startGame(game.id)}
-              >
-                Начать
-              </button>
+              {userPlayed[game.id] < 3 ? (
+                <button
+                  className="px-4 py-2 rounded bg-blue-500 text-white text-lg"
+                  onClick={() => startGame(game.id)}
+                >
+                  Начать
+                </button>
+              ) : (
+                <p className="text-red-500">Попытки исчерпаны</p>
+              )}
             </div>
           ))}
+          <button
+            className="px-4 py-2 rounded bg-purple-500 text-white text-lg mt-4"
+            onClick={() => setShowPrize(true)}
+          >
+            Посмотреть приз
+          </button>
         </div>
       )}
 
@@ -179,6 +197,7 @@ export const UserMenu = () => {
           isGameStarted={isGameStarted}
           totalSeats={totalSeats}
           isWin={isWin}
+          userPlayed={userPlayed}
         />
       )}
 
@@ -195,6 +214,7 @@ export const UserMenu = () => {
           handleGameOver={(win, score) => handleGameOver(win, score, 1)}
           isGameOver={isGameOver}
           isGameStarted={isGameStarted}
+          userPlayed={userPlayed}
         />
       )}
 
@@ -211,8 +231,28 @@ export const UserMenu = () => {
           handleGameOver={(win, score) => handleGameOver(win, score, 2)}
           isGameOver={isGameOver}
           isGameStarted={isGameStarted}
+          userPlayed={userPlayed}
         />
       )}
+
+      {chosenGame === 3 && (
+        <MoonStoneGame
+          gameScores={gameScores}
+          score={score}
+          setScore={setScore}
+          finalScore={finalScore}
+          setFinalScore={setFinalScore}
+          startGame={startGame}
+          restartGame={restartGame}
+          goToMenu={goToMenu}
+          handleGameOver={(win, score) => handleGameOver(win, score, 3)}
+          isGameOver={isGameOver}
+          isGameStarted={isGameStarted}
+          userPlayed={userPlayed}
+        />
+      )}
+
+      {showPrize && <Prize goToMenu={goToMenu} totalScore={totalScore} />}
     </>
   );
 };
