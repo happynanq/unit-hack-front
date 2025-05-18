@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const RookVsBishopGame = ({
   gameScores,
@@ -12,7 +13,7 @@ export const RookVsBishopGame = ({
   handleGameOver,
   isGameOver,
   isGameStarted,
-  userPlayed
+  userPlayed,
 }) => {
   const [board, setBoard] = useState({
     rook: "A1",
@@ -172,27 +173,53 @@ export const RookVsBishopGame = ({
     const rows = ["A", "B", "C"];
     const cols = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     return (
-      <div className="inline-grid grid-cols-9 gap-0 border-2 border-gray-500">
+      <div className="inline-grid grid-cols-9 gap-0 border-2 border-gray-700 bg-gray-800 rounded-lg shadow-lg">
         {rows.map((row) =>
           cols.map((col) => {
             const pos = `${row}${col}`;
             const isLight = (rows.indexOf(row) + col) % 2 === 0;
             const isPossibleMove = possibleMoves.includes(pos);
             return (
-              <div
+              <motion.div
                 key={pos}
-                className={`w-12 h-12 flex items-center justify-center text-2xl cursor-pointer
+                className={`w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center text-2xl cursor-pointer relative
                   ${isLight ? "bg-gray-200" : "bg-gray-400"}
-                  ${isPossibleMove ? "animate-pulse border-2 border-blue-500" : ""}
-                  ${board.rook === pos || board.bishop === pos ? "font-bold" : ""}`}
+                  ${isPossibleMove ? "border-2 border-blue-500 animate-pulse" : ""}`}
                 onClick={() => {
                   if (board.rook === pos) handleRookClick();
                   else handleSquareClick(pos);
                 }}
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+                aria-label={`Клетка ${pos}${isPossibleMove ? ", возможный ход" : ""}`}
               >
-                {board.rook === pos && <span>♖</span>}
-                {board.bishop === pos && <span>♝</span>}
-              </div>
+                <AnimatePresence>
+                  {board.rook === pos && (
+                    <motion.span
+                      key="rook"
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.5 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-3xl drop-shadow-[0_0_4px_rgba(0,0,255,0.5)]"
+                    >
+                      ♖
+                    </motion.span>
+                  )}
+                  {board.bishop === pos && (
+                    <motion.span
+                      key="bishop"
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.5 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-3xl drop-shadow-[0_0_4px_rgba(255,0,0,0.5)]"
+                    >
+                      ♝
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             );
           })
         )}
@@ -201,64 +228,108 @@ export const RookVsBishopGame = ({
   };
 
   return (
-    <div className="p-4 max-w-md mx-auto text-center">
-      <h1 className="text-2xl font-bold mb-4">Ладья против Слона</h1>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen lunar-bg p-6"
+    >
+      <div className="card max-w-lg mx-auto">
+        <h1 className="text-3xl font-bold mb-6 text-center text-indigo-200">
+          Ладья против Слона
+        </h1>
 
-      {/* Game Rules */}
-      {!isGameOver && (
-        <div className="mb-4 text-left text-sm">
-          <h2 className="font-semibold">Правила:</h2>
-          <ul className="list-disc list-inside">
-            <li>Ты управляешь Ладьей (начало: A1). Поймай Слона (начало: C3).</li>
-            <li>Ладья ходит по горизонтали или вертикали на любое число клеток.</li>
-            <li>Слон ходит по диагонали и старается избегать захвата.</li>
-            <li>Победа: Ладья срубает Слона или ставит мат (Слон не может ходить и атакован).</li>
-            <li>Поражение: Ладья попадает под удар Слона.</li>
-            <li>Ничья: 50 ходов без победы.</li>
-            <li>Очки: 500 за ≤6 ходов, -25 за каждый ход после, 0 за поражение/ничью.</li>
-          </ul>
-        </div>
-      )}
-
-      {/* Game Status */}
-      {!isGameOver && (
-        <div className="mb-4">
-          <p>Ходов: {moves}</p>
-          <p>Очки: {score}</p>
-        </div>
-      )}
-
-      {/* Board */}
-      <div className="mb-4">{renderBoard()}</div>
-
-      {/* Game Message */}
-      <p className="mb-4">{gameMessage}</p>
-
-      {/* Game Over Screen */}
-      {isGameOver && (
-        <div className="mb-4">
-          <p className="text-lg mb-2">Игра окончена!</p>
-          <p>Финальный счёт: {finalScore}</p>
-          {gameScores?.chess?.max > 0 && <p>Лучший результат: {gameScores.chess.max}</p>}
-          <p>Сыграно: {userPlayed[2] || 0}/3</p>
-          <div className="mt-4">
-            {userPlayed[2] < 3 && (
-              <button
-                onClick={restartGame}
-                className="px-4 py-2 bg-green-500 text-white rounded mr-2"
-              >
-                Переиграть
-              </button>
-            )}
-            <button
-              onClick={goToMenu}
-              className="px-4 py-2 bg-gray-500 text-white rounded"
-            >
-              В меню
-            </button>
+        {/* Game Rules */}
+        {!isGameOver && (
+          <div className="mb-6 text-sm text-gray-300">
+            <h2 className="font-semibold text-lg text-indigo-300 mb-2">Правила:</h2>
+            <ul className="list-disc list-inside space-y-1">
+              <li>Ты управляешь Ладьей (начало: A1). Поймай Слона (начало: C3).</li>
+              <li>Ладья ходит по горизонтали или вертикали на любое число клеток.</li>
+              <li>Слон ходит по диагонали и старается избегать захвата.</li>
+              <li>Победа: Ладья срубает Слона или ставит мат (Слон не может ходить и атакован).</li>
+              <li>Поражение: Ладья попадает под удар Слона.</li>
+              <li>Ничья: 50 ходов без победы.</li>
+              <li>Очки: 500 за ≤6 ходов, -25 за каждый ход после, 0 за поражение/ничью.</li>
+            </ul>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+
+        {/* Game Status */}
+        {!isGameOver && (
+          <div className="mb-6 text-center">
+            <p className="text-lg text-gray-300">
+              Ходов: <span className="font-semibold text-indigo-300">{moves}</span>
+            </p>
+            <p className="text-lg text-gray-300">
+              Очки: <span className="font-semibold text-yellow-400">{score}</span>
+            </p>
+          </div>
+        )}
+
+        {/* Board */}
+        <div className="mb-6 flex justify-center">{renderBoard()}</div>
+
+        {/* Game Message */}
+        <p
+          className={`mb-6 text-lg ${
+            gameMessage.includes("Победа")
+              ? "text-green-400"
+              : gameMessage.includes("Поражение") || gameMessage.includes("Ничья")
+              ? "text-red-400"
+              : "text-gray-300"
+          }`}
+        >
+          {gameMessage}
+        </p>
+
+        {/* Game Over Screen */}
+        {isGameOver && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="card"
+          >
+            <h2 className="text-2xl font-bold mb-4 text-indigo-200">
+              Игра окончена!
+            </h2>
+            <p className="text-lg text-gray-300 mb-2">
+              Финальный счёт: <span className="font-semibold text-yellow-400">{finalScore}</span>
+            </p>
+            {gameScores?.chess?.max > 0 && (
+              <p className="text-lg text-gray-300 mb-2">
+                Лучший результат: <span className="font-semibold text-yellow-400">{gameScores.chess.max}</span>
+              </p>
+            )}
+            <p className="text-lg text-gray-300 mb-4">
+              Сыграно: <span className="font-semibold text-indigo-300">{userPlayed[2] || 0}/3</span>
+            </p>
+            <div className="flex justify-center gap-3">
+              {userPlayed[2] < 3 && (
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn-primary btn-green"
+                  onClick={restartGame}
+                  aria-label="Переиграть"
+                >
+                  Переиграть
+                </motion.button>
+              )}
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="btn-primary btn-gray"
+                onClick={goToMenu}
+                aria-label="Вернуться в меню"
+              >
+                В меню
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </div>
+    </motion.div>
   );
 };

@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { GameMenu } from "./GameMenu"
-import { GameOver } from "./GameOver"
-import { Carriage } from "./VAGON/Carriage"
-import { useAppContext } from "../../Context/AppContext";
+import { GameMenu } from "./GameMenu";
+import { GameOver } from "./GameOver";
+import { Carriage } from "./VAGON/Carriage";
+import { motion } from "framer-motion";
 
 export const MainMenu = ({
   gameScores,
@@ -17,42 +17,40 @@ export const MainMenu = ({
   setFinalScore,
   isGameOver,
   isGameStarted,
-  userPlayed
-  
-})=>{
-  
-  // const {userId, nickname} = useAppContext()
-
-  
-
+  userPlayed,
+}) => {
   return (
-  <div className="container p-2 max-w-fit mx-auto">
-    {isGameStarted && !isGameOver && (
-      <>
-        <div className="mb-2">
-          
-          <label className="block mb-1 text-sm">
-            {/* Общее количество мест: {totalSeats} */}
-          </label>
-        </div>
-        <Carriage
-          userPlayed={userPlayed}
-          totalSeats={totalSeats}
-          setScore={setScore}
-          setIsGameOver={handleGameOver}
-          score={score}
-        />
-      </>
-    )}
-    {isGameOver && (
-      <GameOver
-        userPlayed={userPlayed}
-        score={finalScore}
-        onRestart={restartGame}
-        isWin={isWin}
-        goToMenu={goToMenu}
-      />
-    )}
-  </div>
-);
-}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen lunar-bg p-6"
+    >
+      <div className="card max-w-4xl mx-auto">
+        {isGameStarted && !isGameOver && (
+          <>
+            <h1 className="text-3xl font-bold mb-6 text-center text-indigo-200">
+              Плацкартный вагон
+            </h1>
+            <Carriage
+              userPlayed={userPlayed}
+              totalSeats={totalSeats}
+              setScore={setScore}
+              setIsGameOver={handleGameOver}
+              score={score}
+            />
+          </>
+        )}
+        {isGameOver && (
+          <GameOver
+            userPlayed={userPlayed}
+            score={finalScore}
+            onRestart={restartGame}
+            isWin={isWin}
+            goToMenu={goToMenu}
+          />
+        )}
+      </div>
+    </motion.div>
+  );
+};

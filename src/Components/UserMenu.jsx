@@ -5,6 +5,7 @@ import { RookVsBishopGame } from "./ChessGame/RookVsBishopGame";
 import { MoonStoneGame } from "./StoneGame/MoonStoneGame";
 import { Prize } from "./Prize/Prize";
 import { useAppContext } from "../Context/AppContext";
+import { motion } from "framer-motion";
 
 const calculateScore = (gameId, attempts, win) => {
   if (!win) return 0;
@@ -146,40 +147,72 @@ export const UserMenu = () => {
   );
 
   return (
-    <>
+    <div className="min-h-screen lunar-bg">
       {!isGameStarted && !isGameOver && !showPrize && (
-        <div className="p-4 max-w-fit mx-auto text-center">
-          <h1 className="text-xl font-bold mb-4">Игры</h1>
-          <div className="mb-4 text-lg">Пользователь: {nickname}</div>
-          {totalScore > 0 && (
-            <div className="mb-4 text-lg">Общий счёт: {totalScore}</div>
-          )}
-          {games.map((game) => (
-            <div className="mb-10" key={game.id}>
-              {gameScores.hasOwnProperty(getGameName[game.id]) && (
-                <div>Счёт: {gameScores[getGameName[game.id]].max}</div>
-              )}
-              <div>Сыграно: {userPlayed[game.id] || 0}/3</div>
-              <h2 className="text-lg font-semibold">{game.name}</h2>
-              {userPlayed[game.id] < 3 ? (
-                <button
-                  className="px-4 py-2 rounded bg-blue-500 text-white text-lg"
-                  onClick={() => startGame(game.id)}
-                >
-                  Начать
-                </button>
-              ) : (
-                <p className="text-red-500">Попытки исчерпаны</p>
-              )}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="p-6 max-w-lg mx-auto"
+        >
+          <div className="card">
+            <h1 className="text-3xl font-bold mb-6 text-center text-indigo-200">
+              Космические Игры
+            </h1>
+            <div className="mb-6 text-lg text-center text-gray-300">
+              Пользователь: <span className="font-semibold">{nickname}</span>
             </div>
-          ))}
-          <button
-            className="px-4 py-2 rounded bg-purple-500 text-white text-lg mt-4"
-            onClick={() => setShowPrize(true)}
-          >
-            Посмотреть приз
-          </button>
-        </div>
+            {totalScore > 0 && (
+              <div className="mb-6 text-lg text-center text-yellow-400">
+                Общий счёт: <span className="font-semibold">{totalScore}</span>
+              </div>
+            )}
+            {games.map((game) => (
+              <motion.div
+                key={game.id}
+                className="mb-8"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+              >
+                <div className="card">
+                  <h2 className="text-xl font-semibold text-indigo-300 mb-2">
+                    {game.name}
+                  </h2>
+                  {gameScores.hasOwnProperty(getGameName[game.id]) && (
+                    <div className="text-gray-300">
+                      Лучший счёт: {gameScores[getGameName[game.id]].max}
+                    </div>
+                  )}
+                  <div className="text-gray-300 mb-2">
+                    Сыграно: {userPlayed[game.id] || 0}/3
+                  </div>
+                  {userPlayed[game.id] < 3 ? (
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="btn-primary btn-blue"
+                      onClick={() => startGame(game.id)}
+                      aria-label={`Начать игру ${game.name}`}
+                    >
+                      Начать
+                    </motion.button>
+                  ) : (
+                    <p className="text-red-400 font-medium">Попытки исчерпаны</p>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="btn-primary btn-purple mt-4 w-full"
+              onClick={() => setShowPrize(true)}
+              aria-label="Посмотреть приз"
+            >
+              Посмотреть приз
+            </motion.button>
+          </div>
+        </motion.div>
       )}
 
       {chosenGame === 0 && (
@@ -253,6 +286,6 @@ export const UserMenu = () => {
       )}
 
       {showPrize && <Prize goToMenu={goToMenu} totalScore={totalScore} />}
-    </>
+    </div>
   );
 };

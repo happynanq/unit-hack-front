@@ -1,24 +1,20 @@
-import VerticalAlignTopIcon from '@mui/icons-material/VerticalAlignTop';
-import VerticalAlignBottomIcon from '@mui/icons-material/VerticalAlignBottom';
-export const Seat = ({ number, isUpper, isMainRow, isSelected, isHighlighted, onClick }) => {
-  const bgColor = isSelected
-    ? isUpper
-      ? 'bg-blue-500'
-      : 'bg-blue-500'
-    : isMainRow
-      ? 'bg-green-300'
-      : 'bg-red-300';
+import { motion } from "framer-motion";
 
-  const widthClass = isMainRow ? 'w-12' : 'w-10';
-  const highlightClass = isHighlighted ? 'highlight-pulse' : '';
+export const Seat = ({ number, isUpper, isMainRow, isSelected, isHighlighted, onClick }) => {
+  const baseClass = isMainRow ? "seat-main" : "seat-side";
+  const statusClass = isSelected ? "seat-selected" : isHighlighted ? "seat-highlighted" : "";
+  console.log(number, isHighlighted)
   return (
-    <div
-      className={`${widthClass} w-20 h-10 m-0.5 flex items-center justify-center rounded cursor-pointer text-sm text-white font-bold ${bgColor} ${highlightClass}`}
-      style={isHighlighted ? { backgroundColor: 'rgba(153, 0, 255, 0.5)' } : {}}
+    <motion.div
+      className={`seat ${baseClass} ${statusClass} w-12 h-12 m-1 flex items-center justify-center text-sm font-bold`}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
       onClick={() => onClick(number, isUpper, isMainRow)}
+      aria-label={`Место ${number}, ${isUpper ? "верхнее" : "нижнее"}, ${isMainRow ? "главный ряд" : "боковой ряд"}`}
+      aria-checked={isSelected}
     >
       <span>{number}</span>
-      {isUpper?<VerticalAlignTopIcon/> : <VerticalAlignBottomIcon/>}
-    </div>
+      <span className="ml-1">{isUpper ? "⬆️" : "⬇️"}</span>
+    </motion.div>
   );
 };

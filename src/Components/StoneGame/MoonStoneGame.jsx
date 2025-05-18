@@ -91,8 +91,8 @@ export const MoonStoneGame = ({
 
   // Hard difficulty strategy
   const hardStrategy = () => {
-    if(stones == 1){ 
-      return 1;
+    if(stones == 1){
+      return 1
     }
     if (stones <= 5) {
       return stones - 1;
@@ -156,10 +156,10 @@ export const MoonStoneGame = ({
     const stoneElements = Array(stones).fill().map((_, index) => (
       <motion.div
         key={`${stones}-${index}`}
-        className="text-2xl"
+        className="moonstone"
         initial={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.3 }}
+        exit={{ opacity: 0, y: -20, rotate: 360 }}
+        transition={{ duration: 0.5 }}
       >
         🪨
       </motion.div>
@@ -167,7 +167,7 @@ export const MoonStoneGame = ({
 
     return (
       <AnimatePresence>
-        <div className="flex flex-wrap justify-center gap-2 max-w-xs mx-auto">
+        <div className="flex flex-wrap justify-center gap-4 max-w-md mx-auto bg-gray-800 bg-opacity-50 rounded-lg p-4">
           {stoneElements}
         </div>
       </AnimatePresence>
@@ -175,135 +175,195 @@ export const MoonStoneGame = ({
   };
 
   return (
-    <div className="p-4 max-w-md mx-auto text-center">
-      <h1 className="text-2xl font-bold mb-4">Последний Лунный Камень Ксилоса</h1>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen lunar-bg p-6"
+    >
+      <div className="card max-w-lg mx-auto">
+        <h1 className="text-3xl font-bold mb-6 text-center text-indigo-200">
+          Последний Лунный Камень Ксилоса
+        </h1>
 
-      {/* Game Rules */}
-      {!isGameOver && (
-        <div className="mb-4 text-left text-sm">
-          <h2 className="font-semibold">Правила:</h2>
-          <ul className="list-disc list-inside">
-            <li>В куче 21 камень. Игроки ходят по очереди.</li>
-            <li>За ход можно взять 1–4 камня (или меньше, если осталось мало).</li>
-            <li>Цель: не взять последний камень. Кто взял последний — проиграл.</li>
-            <li>Выбери, ходить первым или вторым, и уровень сложности.</li>
-            <li>Очки за победу: 100 (Легкий), 200 (Средний), 300 (Сложный).</li>
-          </ul>
-        </div>
-      )}
-
-      {/* Difficulty Selection */}
-      {difficulty === null && !isGameOver && (
-        <div className="mb-4">
-          <p className="mb-2">Выбери уровень сложности:</p>
-          <div className="flex justify-center gap-2">
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded"
-              onClick={() => handleDifficultySelect("easy")}
-            >
-              Легкий
-            </button>
-            <button
-              className="px-4 py-2 bg-yellow-500 text-white rounded"
-              onClick={() => handleDifficultySelect("medium")}
-            >
-              Средний
-            </button>
-            <button
-              className="px-4 py-2 bg-red-500 text-white rounded"
-              onClick={() => handleDifficultySelect("hard")}
-            >
-              Сложный
-            </button>
+        {/* Game Rules */}
+        {!isGameOver && (
+          <div className="mb-6 text-sm text-gray-300">
+            <h2 className="font-semibold text-lg text-indigo-300 mb-2">Правила:</h2>
+            <ul className="list-disc list-inside space-y-1">
+              <li>В куче 21 камень. Игроки ходят по очереди.</li>
+              <li>За ход можно взять 1–4 камня (или меньше, если осталось мало).</li>
+              <li>Цель: не взять последний камень. Кто взял последний — проиграл.</li>
+              <li>Выбери, ходить первым или вторым, и уровень сложности.</li>
+              <li>Очки за победу: 100 (Легкий), 200 (Средний), 300 (Сложный).</li>
+            </ul>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Turn Selection */}
-      {difficulty !== null && playerTurn === null && !isGameOver && (
-        <div className="mb-4">
-          <p className="mb-2">Ходить первым?</p>
-          <div className="flex justify-center gap-2">
-            <button
-              className="px-4 py-2 bg-green-500 text-white rounded"
-              onClick={() => handleTurnSelect(true)}
-            >
-              Да
-            </button>
-            <button
-              className="px-4 py-2 bg-gray-500 text-white rounded"
-              onClick={() => handleTurnSelect(false)}
-            >
-              Нет
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Game Status */}
-      {playerTurn !== null && !isGameOver && (
-        <div className="mb-4">
-          <p>Осталось камней: {stones}</p>
-          {difficulty && (
-            <p>Сложность: {difficulty === "easy" ? "Легкая" : difficulty === "medium" ? "Средняя" : "Сложная"}</p>
-          )}
-          {isComputerThinking && <p className="animate-pulse">Компьютер думает...</p>}
-        </div>
-      )}
-
-      {/* Stones */}
-      {playerTurn !== null && !isGameOver && (
-        <div className="mb-4">
-          {renderStones()}
-        </div>
-      )}
-
-      {/* Player Move Selection */}
-      {playerTurn === true && !isGameOver && !isComputerThinking && stones > 0 && (
-        <div className="mb-4">
-          <p className="mb-2">Сколько камней взять?</p>
-          <div className="flex justify-center gap-2">
-            {[...Array(Math.min(4, stones))].map((_, i) => (
-              <button
-                key={i}
-                className="px-4 py-2 bg-blue-500 text-white rounded"
-                onClick={() => handlePlayerMove(i + 1)}
+        {/* Difficulty Selection */}
+        {difficulty === null && !isGameOver && (
+          <div className="mb-6">
+            <p className="mb-3 text-lg text-gray-300">Выбери уровень сложности:</p>
+            <div className="flex justify-center gap-3 flex-wrap">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="btn-primary btn-blue"
+                onClick={() => handleDifficultySelect("easy")}
+                aria-label="Выбрать легкий уровень"
               >
-                {i + 1}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Game Message */}
-      <p className="mb-4">{gameMessage}</p>
-
-      {/* Game Over Screen */}
-      {isGameOver && (
-        <div className="mb-4">
-          <p className="text-lg mb-2">Игра окончена!</p>
-          <p>Финальный счёт: {localFinalScore}</p>
-          {gameScores?.stones?.max > 0 && <p>Лучший результат: {gameScores.stones.max}</p>}
-          <p>Сыграно: {userPlayed[3] || 0}/3</p>
-          <div className="mt-4">
-            {userPlayed[3] < 3 && (
-              <button
-                onClick={restartGame}
-                className="px-4 py-2 bg-green-500 text-white rounded mr-2"
+                Легкий
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="btn-primary btn-yellow"
+                onClick={() => handleDifficultySelect("medium")}
+                aria-label="Выбрать средний уровень"
               >
-                Переиграть
-              </button>
+                Средний
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="btn-primary btn-red"
+                onClick={() => handleDifficultySelect("hard")}
+                aria-label="Выбрать сложный уровень"
+              >
+                Сложный
+              </motion.button>
+            </div>
+          </div>
+        )}
+
+        {/* Turn Selection */}
+        {difficulty !== null && playerTurn === null && !isGameOver && (
+          <div className="mb-6">
+            <p className="mb-3 text-lg text-gray-300">Ходить первым?</p>
+            <div className="flex justify-center gap-3">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="btn-primary btn-green"
+                onClick={() => handleTurnSelect(true)}
+                aria-label="Ходить первым"
+              >
+                Да
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="btn-primary btn-gray"
+                onClick={() => handleTurnSelect(false)}
+                aria-label="Ходить вторым"
+              >
+                Нет
+              </motion.button>
+            </div>
+          </div>
+        )}
+
+        {/* Game Status */}
+        {playerTurn !== null && !isGameOver && (
+          <div className="mb-6 text-center">
+            <p className="text-lg text-gray-300">Осталось камней: <span className="font-semibold text-indigo-300">{stones}</span></p>
+            {difficulty && (
+              <p className="text-lg text-gray-300">
+                Сложность: <span className="font-semibold text-indigo-300">
+                  {difficulty === "easy" ? "Легкая" : difficulty === "medium" ? "Средняя" : "Сложная"}
+                </span>
+              </p>
             )}
-            <button
-              onClick={goToMenu}
-              className="px-4 py-2 bg-gray-500 text-white rounded"
-            >
-              В меню
-            </button>
+            {isComputerThinking && (
+              <motion.p
+                animate={{ opacity: [1, 0.5, 1] }}
+                transition={{ repeat: Infinity, duration: 1.5 }}
+                className="text-lg text-yellow-400"
+              >
+                Компьютер думает...
+              </motion.p>
+            )}
           </div>
-        </div>
-      )}
-    </div>
+        )}
+
+        {/* Stones */}
+        {playerTurn !== null && !isGameOver && (
+          <div className="mb-6">{renderStones()}</div>
+        )}
+
+        {/* Player Move Selection */}
+        {playerTurn === true && !isGameOver && !isComputerThinking && stones > 0 && (
+          <div className="mb-6">
+            <p className="mb-3 text-lg text-gray-300">Сколько камней взять?</p>
+            <div className="flex justify-center gap-3 flex-wrap">
+              {[...Array(Math.min(4, stones))].map((_, i) => (
+                <motion.button
+                  key={i}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn-primary btn-blue w-12 h-12 flex items-center justify-center text-lg"
+                  onClick={() => handlePlayerMove(i + 1)}
+                  aria-label={`Взять ${i + 1} камней`}
+                >
+                  {i + 1}
+                </motion.button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Game Message */}
+        <p className={`mb-6 text-lg ${gameMessage.includes("Победа") ? "text-green-400" : gameMessage.includes("Поражение") ? "text-red-400" : "text-gray-300"}`}>
+          {gameMessage}
+        </p>
+
+        {/* Game Over Screen */}
+        {isGameOver && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="card"
+          >
+            <h2 className="text-2xl font-bold mb-4 text-indigo-200">
+              Игра окончена!
+            </h2>
+            <p className="text-lg text-gray-300 mb-2">
+              Финальный счёт: <span className="font-semibold text-yellow-400">{localFinalScore}</span>
+            </p>
+            {gameScores?.stones?.max > 0 && (
+              <p className="text-lg text-gray-300 mb-2">
+                Лучший результат: <span className="font-semibold text-yellow-400">{gameScores.stones.max}</span>
+              </p>
+            )}
+            <p className="text-lg text-gray-300 mb-4">
+              Сыграно: <span className="font-semibold text-indigo-300">{userPlayed[3] || 0}/3</span>
+            </p>
+            <div className="flex justify-center gap-3">
+              {userPlayed[3] < 3 && (
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn-primary btn-green"
+                  onClick={restartGame}
+                  aria-label="Переиграть"
+                >
+                  Переиграть
+                </motion.button>
+              )}
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="btn-primary btn-gray"
+                onClick={goToMenu}
+                aria-label="Вернуться в меню"
+              >
+                В меню
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </div>
+    </motion.div>
   );
 };

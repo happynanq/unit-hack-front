@@ -1,6 +1,6 @@
 import { Seat } from "./Seat";
 
-export const SeatBlock = ({ seats, onSeatClick, isSelected, isHighlighted, isMainRow }) => {
+export const SeatBlock = ({ seats, onSeatClick, isSelected, isHighlighted, isMainRow, className }) => {
   const renderSeats = () => {
     if (isMainRow) {
       const upperSeats = seats.slice(0, 2);
@@ -37,7 +37,7 @@ export const SeatBlock = ({ seats, onSeatClick, isSelected, isHighlighted, isMai
       );
     } else {
       return (
-        <div className="flex flex-col">
+        <div className={`flex flex-col ${className}`}>
           {seats.map((seat) => (
             <Seat
               key={seat.number}
@@ -55,7 +55,7 @@ export const SeatBlock = ({ seats, onSeatClick, isSelected, isHighlighted, isMai
   };
 
   return (
-    <div className="border border-gray-300 p-0.5 m-1 rounded">
+    <div className="border border-gray-600 rounded-lg p-1 m-1 bg-gray-800 bg-opacity-50">
       {renderSeats()}
     </div>
   );
