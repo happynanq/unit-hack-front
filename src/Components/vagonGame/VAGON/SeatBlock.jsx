@@ -3,8 +3,8 @@ import { Seat } from "./Seat";
 export const SeatBlock = ({ seats, onSeatClick, isSelected, isHighlighted, isMainRow, className }) => {
   const renderSeats = () => {
     if (isMainRow) {
-      const upperSeats = seats.slice(0, 2); // Top pair
-      const lowerSeats = seats.slice(2, 4); // Bottom pair
+      const upperSeats = seats.slice(0, 2); 
+      const lowerSeats = seats.slice(2, 4); 
       return (
         <div className="flex flex-col gap-y-2 h-full">
           <div className="flex flex-row gap-x-1">
@@ -17,11 +17,11 @@ export const SeatBlock = ({ seats, onSeatClick, isSelected, isHighlighted, isMai
                 isSelected={isSelected(seat)}
                 isHighlighted={isHighlighted(seat)}
                 onClick={onSeatClick}
-                className="flex-1" // Fill width
+                className="flex-1" 
               />
             ))}
           </div>
-          <div className="table" aria-hidden="true"></div> {/* Left-aligned table */}
+          <div className="table" aria-hidden="true"></div> {}
           <div className="flex flex-row gap-x-1">
             {lowerSeats.map((seat) => (
               <Seat
@@ -32,7 +32,7 @@ export const SeatBlock = ({ seats, onSeatClick, isSelected, isHighlighted, isMai
                 isSelected={isSelected(seat)}
                 isHighlighted={isHighlighted(seat)}
                 onClick={onSeatClick}
-                className="flex-1" // Fill width
+                className="flex-1" 
               />
             ))}
           </div>

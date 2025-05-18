@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 export const Seat = ({ number, isUpper, isMainRow, isSelected, isHighlighted, onClick }) => {
   const baseClass = isMainRow ? "seat-main" : "seat-side";
   const statusClass = isSelected ? "seat-selected" : isHighlighted ? "seat-highlighted" : "";
-  const widthClass = isMainRow ? "w-20" : "w-12"; // Wider main row seats
+  const widthClass = isMainRow ? "w-20" : "w-12"; 
 
   return (
     <motion.div

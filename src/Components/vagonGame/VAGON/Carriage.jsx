@@ -28,7 +28,7 @@ export const Carriage = ({ userPlayed, totalSeats, setScore, setIsGameOver, scor
 
   const mainSeats = [];
   const sideSeats = [];
-  // Main row
+  
   for (let i = 1; i <= mainSeatsCount; i += 4) {
     mainSeats.push(
       { number: i, isUpper: false, isMainRow: true },
@@ -38,7 +38,7 @@ export const Carriage = ({ userPlayed, totalSeats, setScore, setIsGameOver, scor
     );
   }
 
-  // Side row
+  
   for (let i = mainSeatsCount + 1; i <= adjustedTotalSeats; i += 2) {
     sideSeats.push(
       { number: i, isUpper: false, isMainRow: false },
@@ -57,7 +57,7 @@ export const Carriage = ({ userPlayed, totalSeats, setScore, setIsGameOver, scor
     sideBlocks.push(sideSeats.slice(i, i + 2));
   }
 
-  // Handle input change
+  
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
@@ -74,13 +74,13 @@ export const Carriage = ({ userPlayed, totalSeats, setScore, setIsGameOver, scor
     if (newSeat < 1) {
       newSeat = 1;
       boundaryPenalty = 16;
-      setBoundaryWarning("Выход за границы вагона!");
+      setBoundaryWarning("Выход за границы вагона! Сейчас вы на первом месте");
       setTimeout(() => setBoundaryWarning(""), 3000);
     }
     if (newSeat > adjustedTotalSeats) {
       newSeat = adjustedTotalSeats;
       boundaryPenalty = 16;
-      setBoundaryWarning("Выход за границы вагона!");
+      setBoundaryWarning("Выход за границы вагона! Сейчас вы на последнем месте");
       setTimeout(() => setBoundaryWarning(""), 3000);
     }
 
@@ -158,9 +158,9 @@ export const Carriage = ({ userPlayed, totalSeats, setScore, setIsGameOver, scor
 
   return (
     <div className="card">
-      <h1 className="text-3xl font-bold mb-4 text-center text-indigo-200">
+      {/* <h1 className="text-3xl font-bold mb-4 text-center text-indigo-200">
         Плацкартный вагон, загадано: {answerSeat}
-      </h1>
+      </h1> */}
       <div className="mb-4 text-sm text-gray-300">
         <h2 className="font-semibold text-lg text-indigo-300 mb-2">Правила:</h2>
         <ul className="list-disc list-inside space-y-1">
@@ -168,10 +168,11 @@ export const Carriage = ({ userPlayed, totalSeats, setScore, setIsGameOver, scor
           <li>Компьютер загадал случайное место — ваша цель его угадать.</li>
           <li>Используйте команды: "+n" (переместиться на n мест вперед) или "-n" (назад).</li>
           <li>После перемещения вы увидите тип ряда (главный/боковой) и позицию (верхнее/нижнее).</li>
-          <li>Когда готовы угадать, введите номер места в поле “Предполагаемое место”.</li>
+          <li>Когда готовы угадать, введите номер места в поле “Ответ”.</li>
           <li>Победа: угадали место с первой попытки.</li>
-          <li>Поражение: вышли за пределы вагона (1–54).</li>
+          <li>В случае выхода за границы вагона, вам прибавится штраф в 16 очков за выход.</li>
           <li>Очки: 500 за ≤6 попыток, -50 за каждую дополнительную попытку (минимум 0).</li>
+          <li>Финальный подсчет баллов вы увидете в конце игры</li>
         </ul>
       </div>
 
@@ -264,16 +265,16 @@ export const Carriage = ({ userPlayed, totalSeats, setScore, setIsGameOver, scor
             value={guessValue}
             onChange={handleGuessChange}
             onKeyPress={(e) => e.key === "Enter" && handleGuessSubmit()}
-            placeholder="Предполагаемое место"
+            placeholder="Ответ"
             className="input-field w-32"
-            aria-label="Ввести предполагаемое место"
+            aria-label="Ввести Ответ"
           />
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             className="btn-primary btn-blue"
             onClick={handleGuessSubmit}
-            aria-label="Проверить предполагаемое место"
+            aria-label="Проверить Ответ"
           >
             Проверить
           </motion.button>
@@ -292,7 +293,7 @@ export const Carriage = ({ userPlayed, totalSeats, setScore, setIsGameOver, scor
         </AnimatePresence>
       </div>
       <div className="carriage-container flex flex-col gap-4">
-        {/* Top Tambour */}
+        {}
         <div className="tambour">
           Вход (Тамбур)
         </div>
@@ -312,7 +313,7 @@ export const Carriage = ({ userPlayed, totalSeats, setScore, setIsGameOver, scor
               ))}
             </div>
           </div>
-          <div className="corridor"></div> {/* Wider corridor */}
+          <div className="corridor"></div> {}
           <div className="side-row-container">
             <h2 className="text-lg font-semibold mb-2 text-indigo-300 text-center m-1">Боковой</h2>
             <div className="flex flex-col">
@@ -330,7 +331,7 @@ export const Carriage = ({ userPlayed, totalSeats, setScore, setIsGameOver, scor
             </div>
           </div>
         </div>
-        {/* Bottom Tambour */}
+        {}
         <div className="tambour">
           Вход (Тамбур)
         </div>

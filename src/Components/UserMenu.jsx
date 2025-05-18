@@ -23,7 +23,7 @@ const calculateScore = (gameId, attempts, win) => {
     const score = 500 - (attempts - 6) * 25;
     return Math.max(score, 0);
   } else if (gameId === 3) {
-    return attempts; // Points for stones game (100, 200, 300)
+    return attempts; 
   }
   return 0;
 };
@@ -44,7 +44,6 @@ export const UserMenu = () => {
   const [showPrize, setShowPrize] = useState(false);
   const [showMerch, setShowMerch] = useState(false);
 
-  // Initialize gameScores from upScore
   useEffect(() => {
     setGameScores({
       train: { max: upScore[0] || 0, prev: upScore[0] || 0 },
@@ -56,7 +55,7 @@ export const UserMenu = () => {
 
   const games = [
     { name: "Плацкартный вагон", id: 0 },
-    { name: "Яички", id: 1 },
+    { name: "Несправедливая гравитация", id: 1 },
     { name: "Ладья против Слона", id: 2 },
     { name: "Камешки", id: 3 },
   ];
@@ -127,10 +126,9 @@ export const UserMenu = () => {
       }));
     }
 
-    // Increment userPlayed for the game
     updateUserPlayed(gameId);
 
-    // API call for score
+    // ! API 
     const req = async () => {
       try {
         const response = await fetch("http://5.35.80.93:8000/result", {
@@ -229,7 +227,7 @@ export const UserMenu = () => {
               onClick={() => setShowMerch(true)}
               aria-label="Перейти к мерчу"
             >
-              Мерч
+              Мерч за счёт
             </motion.button>
           </div>
         </motion.div>

@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Orbitron:wght@700&display=swap');
 
-/* Merida chess font */
+
 @font-face {
   font-family: 'Merida';
   src: url('https://raw.githubusercontent.com/ornicar/lila/master/public/font/merida.woff2') format('woff2');
@@ -94,7 +94,7 @@ h1, h2 {
   height: auto;
   padding: 0;
   margin: 0;
-  padding-left: 3rem; /* Space for rank labels */
+  padding-left: 3rem; 
 }
 
 .chessboard {
@@ -156,14 +156,14 @@ h1, h2 {
 
 .merida-rook::before {
   content: '\2656';
-  font-size: 200px; /* Fill ~200x200px square (desktop) */
+  font-size: 200px; 
   display: block;
   line-height: 1;
 }
 
 .merida-bishop::before {
   content: '\2657';
-  font-size: 200px; /* Fill ~200x200px square (desktop) */
+  font-size: 200px; 
   display: block;
   line-height: 1;
 }
@@ -200,7 +200,6 @@ h1, h2 {
   width: 400px;
 }
 
-/* Narrow screen */
 @media (max-width: 400px) {
   .card {
     padding: 0.5rem;
@@ -227,7 +226,7 @@ h1, h2 {
   }
 
   .merida-rook::before, .merida-bishop::before {
-    font-size: calc(95vw / 3); /* ~160px (480px / 3) */
+    font-size: calc(95vw / 3); 
   }
 
   .rank-label, .file-label {
@@ -245,7 +244,7 @@ h1, h2 {
   }
 }
 
-/* Tablet */
+
 @media (max-width: 768px) {
   .card {
     padding: 0.75rem;
@@ -268,7 +267,7 @@ h1, h2 {
   }
 
   .merida-rook::before, .merida-bishop::before {
-    font-size: 150px; /* ~150px (tablet) */
+    font-size: 150px; 
   }
 
   .loss-modal {
@@ -276,7 +275,7 @@ h1, h2 {
   }
 }
 
-/* Mobile */
+
 @media (max-width: 500px) {
   .chessboard-container {
     padding-left: 2.5rem;
@@ -295,6 +294,6 @@ h1, h2 {
   }
 
   .merida-rook::before, .merida-bishop::before {
-    font-size: 120px; /* ~120px (mobile) */
+    font-size: 120px; 
   }
 }

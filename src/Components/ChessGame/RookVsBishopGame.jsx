@@ -216,11 +216,11 @@ export const RookVsBishopGame = ({
                       />
                     )}
                   </AnimatePresence>
-                  {/* Rank label (left, 1 to 9 for rows) */}
+                  {}
                   {colIndex === 0 && (
                     <span className="rank-label">{row}</span>
                   )}
-                  {/* File label (bottom, A to C for columns) */}
+                  {}
                   {rowIndex === 8 && (
                     <span className="file-label">{cols[colIndex]}</span>
                   )}
@@ -245,7 +245,7 @@ export const RookVsBishopGame = ({
           Ладья против Слона
         </h1>
 
-        {/* Game Rules */}
+        {}
         {!isGameOver && (
           <div className="mb-8 text-lg text-gray-300">
             <h2 className="font-semibold text-2xl text-indigo-300 mb-3">Правила:</h2>
@@ -253,7 +253,7 @@ export const RookVsBishopGame = ({
               <li>Ты управляешь Ладьей (начало: A1). Поймай Слона (начало: C3).</li>
               <li>Ладья ходит по горизонтали или вертикали на любое число клеток.</li>
               <li>Слон ходит по диагонали и старается избегать захвата.</li>
-              <li>Победа: Ладья срубает Слона или ставит мат (Слон не может ходить и атакован).</li>
+              <li>Победа: Ладья срубает Слона </li>
               <li>Поражение: Ладья попадает под удар Слона.</li>
               <li>Ничья: 50 ходов без победы.</li>
               <li>Очки: 500 за ≤6 ходов, -25 за каждый ход после, 0 за поражение/ничью.</li>
@@ -278,7 +278,7 @@ export const RookVsBishopGame = ({
           </div>
         )}
 
-        {/* Game Status */}
+        {}
         {!isGameOver && (
           <div className="mb-8 text-center">
             <p className="text-2xl text-gray-300">
@@ -290,10 +290,10 @@ export const RookVsBishopGame = ({
           </div>
         )}
 
-        {/* Board */}
+        {}
         <div className="mb-8 flex justify-center">{renderBoard()}</div>
 
-        {/* Game Message (Win/Draw) */}
+        {}
         {(gameState === "win" || gameState === "draw") && (
           <p
             className={`mb-8 text-2xl ${
@@ -304,7 +304,7 @@ export const RookVsBishopGame = ({
           </p>
         )}
 
-        {/* Loss Modal */}
+        {}
         <AnimatePresence>
           {gameState === "loss" && (
             <motion.div
@@ -365,7 +365,7 @@ export const RookVsBishopGame = ({
           )}
         </AnimatePresence>
 
-        {/* Game Over Screen (Win/Draw) */}
+        {}
         {isGameOver && (gameState === "win" || gameState === "draw") && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}

@@ -2,23 +2,23 @@ import { useState } from 'react'
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Games } from './Games';
-// import {}
+
 
 
 
 const tgTheme = createTheme({
   palette: {
     primary: {
-      main: "#2ea6ff", // Голубой, как в Telegram
+      main: "#2ea6ff", 
     },
     background: {
-      default: "#18222d", // Тёмный фон
-      paper: "#1e2c3a",   // Цвет карточек
+      default: "#18222d", 
+      paper: "#1e2c3a",   
     },
     text: {
-      primary: "#ffffff", // Белый текст
+      primary: "#ffffff", 
     },
-    mode: "dark", // Тёмная тема
+    mode: "dark", 
   },
 });
 

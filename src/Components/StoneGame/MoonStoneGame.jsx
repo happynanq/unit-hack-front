@@ -24,7 +24,7 @@ export const MoonStoneGame = ({
   const [moveCount, setMoveCount] = useState(0);
   const [localFinalScore, setLocalFinalScore] = useState(0);
 
-  // Initialize or reset game
+  
   useEffect(() => {
     if (isGameStarted && !isGameOver) {
       setStones(21);
@@ -40,14 +40,14 @@ export const MoonStoneGame = ({
     }
   }, [isGameStarted, restartGame, isGameOver, setScore, setFinalScore]);
 
-  // Handle computer move when it's their turn
+  
   useEffect(() => {
     if (!playerTurn && playerTurn !== null && !isGameOver && !isComputerThinking && stones > 0) {
       computerMove();
     }
   }, [playerTurn, isGameOver, isComputerThinking, stones]);
 
-  // Computer move logic
+  
   const computerMove = () => {
     setIsComputerThinking(true);
     setTimeout(() => {
@@ -89,7 +89,7 @@ export const MoonStoneGame = ({
     }, 1000);
   };
 
-  // Hard difficulty strategy
+  
   const hardStrategy = () => {
     if(stones == 1){
       return 1
@@ -104,13 +104,13 @@ export const MoonStoneGame = ({
     return remainder === 0 ? 4 : remainder;
   };
 
-  // Handle difficulty selection
+  
   const handleDifficultySelect = (level) => {
     setDifficulty(level);
     setGameMessage("Ходить первым?");
   };
 
-  // Handle turn selection
+  
   const handleTurnSelect = (first) => {
     setPlayerTurn(first);
     if (!first) {
@@ -122,7 +122,7 @@ export const MoonStoneGame = ({
     }
   };
 
-  // Handle player move
+  
   const handlePlayerMove = (num) => {
     if (!playerTurn || isComputerThinking || stones <= 0) return;
     if (num < 1 || num > Math.min(4, stones)) {
@@ -146,7 +146,7 @@ export const MoonStoneGame = ({
     setPlayerTurn(false);
   };
 
-  // Render stones
+  
   const renderStones = () => {
     if (stones < 0) {
       console.error("Invalid stone count:", stones);
@@ -186,7 +186,7 @@ export const MoonStoneGame = ({
           Последний Лунный Камень Ксилоса
         </h1>
 
-        {/* Game Rules */}
+        {}
         {!isGameOver && (
           <div className="mb-6 text-sm text-gray-300">
             <h2 className="font-semibold text-lg text-indigo-300 mb-2">Правила:</h2>
@@ -200,7 +200,7 @@ export const MoonStoneGame = ({
           </div>
         )}
 
-        {/* Difficulty Selection */}
+        {}
         {difficulty === null && !isGameOver && (
           <div className="mb-6">
             <p className="mb-3 text-lg text-gray-300">Выбери уровень сложности:</p>
@@ -236,7 +236,7 @@ export const MoonStoneGame = ({
           </div>
         )}
 
-        {/* Turn Selection */}
+        {}
         {difficulty !== null && playerTurn === null && !isGameOver && (
           <div className="mb-6">
             <p className="mb-3 text-lg text-gray-300">Ходить первым?</p>
@@ -269,7 +269,7 @@ export const MoonStoneGame = ({
             whileTap={{ scale: 0.95 }}
             className="btn-primary btn-red"
             onClick={()=>{
-              // setGameState("loss")
+              
               handleGameOver(false, score);
             }}
             aria-label="Остановить игру"
@@ -278,7 +278,7 @@ export const MoonStoneGame = ({
           </motion.button>
           </div>
         )}
-        {/* Game Status */}
+        {}
         {playerTurn !== null && !isGameOver && (
           <div className="mb-6 text-center">
             <p className="text-lg text-gray-300">Осталось камней: <span className="font-semibold text-indigo-300">{stones}</span></p>
@@ -301,12 +301,12 @@ export const MoonStoneGame = ({
           </div>
         )}
 
-        {/* Stones */}
+        {}
         {playerTurn !== null && !isGameOver && (
           <div className="mb-6">{renderStones()}</div>
         )}
 
-        {/* Player Move Selection */}
+        {}
         {playerTurn === true && !isGameOver && !isComputerThinking && stones > 0 && (
           <div className="mb-6">
             <p className="mb-3 text-lg text-gray-300">Сколько камней взять?</p>
@@ -327,12 +327,12 @@ export const MoonStoneGame = ({
           </div>
         )}
 
-        {/* Game Message */}
+        {}
         <p className={`mb-6 text-lg ${gameMessage.includes("Победа") ? "text-green-400" : gameMessage.includes("Поражение") ? "text-red-400" : "text-gray-300"}`}>
           {gameMessage}
         </p>
 
-        {/* Game Over Screen */}
+        {}
         {isGameOver && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}

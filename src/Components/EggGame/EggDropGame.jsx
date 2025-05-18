@@ -23,7 +23,7 @@ export const EggDropGame = ({
   const [finalGuess, setFinalGuess] = useState("");
   const [showFinalGuess, setShowFinalGuess] = useState(false);
 
-  // Initialize game
+  
   useEffect(() => {
     if (isGameStarted && !isGameOver) {
       setCriticalFloor(Math.floor(Math.random() * 100) + 1);
@@ -37,7 +37,7 @@ export const EggDropGame = ({
     }
   }, [isGameStarted, isGameOver, setScore]);
 
-  // Calculate score based on attempts
+  
   const calculateScore = (currentAttempts) => {
     if (currentAttempts > 14) {
       return Math.max(500 - (currentAttempts - 14) * 20, 0);
@@ -45,12 +45,12 @@ export const EggDropGame = ({
     return 500;
   };
 
-  // Handle floor submission
+  
   const handleFloorSubmit = (e) => {
     e.preventDefault();
     const floor = parseInt(currentFloor);
 
-    // Input validation
+    
     if (isNaN(floor) || floor < 1 || floor > 100) {
       setGameMessage("Пожалуйста, введи число от 1 до 100.");
       return;
@@ -59,7 +59,7 @@ export const EggDropGame = ({
     const newAttempts = attempts + 1;
     setAttempts(newAttempts);
 
-    // Check if egg breaks
+    
     if (floor >= criticalFloor) {
       const newEggs = eggs - 1;
       setEggs(newEggs);
@@ -77,14 +77,14 @@ export const EggDropGame = ({
       );
     }
 
-    // Update score
+    
     const newScore = calculateScore(newAttempts);
     setScore(newScore);
 
     setCurrentFloor(floor);
   };
 
-  // Handle final guess submission
+  
   const handleFinalGuess = (e) => {
     e.preventDefault();
     const guess = parseInt(finalGuess);
@@ -116,10 +116,10 @@ export const EggDropGame = ({
     >
       <div className="card max-w-lg mx-auto">
         <h1 className="text-3xl font-bold mb-6 text-center text-indigo-200">
-          Яички
+          Несправедливая гравитация
         </h1>
 
-        {/* Game Rules */}
+        {}
         {!isGameOver && (
           <div className="mb-6 text-sm text-gray-300">
             <h2 className="font-semibold text-lg text-indigo-300 mb-2">Правила:</h2>
@@ -150,7 +150,7 @@ export const EggDropGame = ({
         )}
         
 
-        {/* Game Status */}
+        {}
         {!isGameOver && !showFinalGuess && (
           <div className="mb-6 text-center">
             <p className="text-lg text-gray-300">
@@ -165,7 +165,7 @@ export const EggDropGame = ({
           </div>
         )}
 
-        {/* Game Message */}
+        {}
         <p
           className={`mb-6 text-lg ${
             gameMessage.includes("Поздравляем")
@@ -178,7 +178,7 @@ export const EggDropGame = ({
           {gameMessage}
         </p>
 
-        {/* Floor Input */}
+        {}
         {!isGameOver && !showFinalGuess && (
           <motion.form
             onSubmit={handleFloorSubmit}
@@ -209,7 +209,7 @@ export const EggDropGame = ({
           </motion.form>
         )}
 
-        {/* Final Guess Input */}
+        {}
         {!isGameOver && showFinalGuess && (
           <motion.form
             onSubmit={handleFinalGuess}
@@ -240,7 +240,7 @@ export const EggDropGame = ({
           </motion.form>
         )}
 
-        {/* Game Over Screen */}
+        {}
         {isGameOver && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}

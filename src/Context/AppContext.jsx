@@ -9,10 +9,10 @@ export const useAppContext = () => {
 export const AppProvider = ({ children }) => {
   const [userId, setUserId] = useState(null);
   const [nickname, setNickname] = useState("");
-  const [userPlayed, setUserPlayed] = useState([0, 0, 0, 0]); // [train, eggs, chess, stones]
+  const [userPlayed, setUserPlayed] = useState([0, 0, 0, 0]);
   const [upScore, setUpScore] = useState([0, 0, 0, 0])
   const [sumScore, setSumScore] = useState(0)
-  // Initialize web app and fetch user data
+ 
   useEffect(() => {
     const start = async () => {
       const queryString = window.location.search;
@@ -21,7 +21,7 @@ export const AppProvider = ({ children }) => {
       const nickname = urlParams.get("nickname");
 
       setNickname(nickname || "Guest");
-      setUserId(userId);
+      setUserId(userId || 0);
       setUserPlayed([0,0,0,0])
       try {
         const response = await fetch(`http://5.35.80.93:8000/get_data/${userId}`).then(r=>{
@@ -66,7 +66,6 @@ export const AppProvider = ({ children }) => {
     start();
   }, []);
 
-  // Function to update userPlayed and sync with server
   const updateUserPlayed = async (gameId) => {
     setUserPlayed((prev) => {
       const newPlayed = [...prev];
