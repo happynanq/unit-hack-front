@@ -1,7 +1,7 @@
 import { useAppContext } from "../../Context/AppContext";
 import { motion } from "framer-motion";
 // import Confetti from "react-confetti"; // Uncomment if adding confetti
-import webP from "../../assets/gold_ticket.webp"
+import webP from "../../assets/ticket.png"
 export const Prize = ({ goToMenu, totalScore }) => {
   const { nickname, userPlayed } = useAppContext();
   const totalAttempts = userPlayed.reduce((sum, count) => sum + count, 0);

@@ -81,7 +81,7 @@ export const EggDropGame = ({
     const newScore = calculateScore(newAttempts);
     setScore(newScore);
 
-    setCurrentFloor("");
+    setCurrentFloor(floor);
   };
 
   // Handle final guess submission
@@ -133,6 +133,22 @@ export const EggDropGame = ({
             </ul>
           </div>
         )}
+        {!isGameOver && (
+          <div className="mb-6 text-center">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            className="btn-primary btn-red"
+            onClick={()=>{
+              handleGameOver(false, score);
+            }}
+            aria-label="Остановить игру"
+          >
+            Остановить
+          </motion.button>
+          </div>
+        )}
+        
 
         {/* Game Status */}
         {!isGameOver && !showFinalGuess && (

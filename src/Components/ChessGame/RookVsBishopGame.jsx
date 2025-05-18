@@ -36,28 +36,28 @@ export const RookVsBishopGame = ({
     }
   }, [isGameStarted, isGameOver, setScore]);
 
-  // Convert position to row,col (e.g., A1 -> [0,0])
+  // Convert position to row,col (e.g., A1 -> [0,0] for 9x3)
   const posToCoords = (pos) => {
-    const row = pos.charCodeAt(0) - 65; // A=0, B=1, C=2
-    const col = parseInt(pos[1]) - 1; // 1=0, ..., 9=8
+    const col = pos.charCodeAt(0) - 65; // A=0, B=1, C=2
+    const row = parseInt(pos[1]) - 1; // 1=0, ..., 9=8
     return [row, col];
   };
 
   // Convert row,col to position (e.g., [0,0] -> A1)
   const coordsToPos = (row, col) => {
-    return String.fromCharCode(65 + row) + (col + 1);
+    return String.fromCharCode(65 + col) + (row + 1);
   };
 
   // Get possible Rook moves
   const getRookMoves = (pos) => {
     const [row, col] = posToCoords(pos);
     const moves = [];
-    // Horizontal
-    for (let c = 0; c < 9; c++) {
+    // Horizontal (across columns A, B, C)
+    for (let c = 0; c < 3; c++) {
       if (c !== col) moves.push(coordsToPos(row, c));
     }
-    // Vertical
-    for (let r = 0; r < 3; r++) {
+    // Vertical (across rows 1 to 9)
+    for (let r = 0; r < 9; r++) {
       if (r !== row) moves.push(coordsToPos(r, col));
     }
     return moves;
@@ -75,7 +75,7 @@ export const RookVsBishopGame = ({
     ];
     directions.forEach(([dr, dc]) => {
       let r = row + dr, c = col + dc;
-      while (r >= 0 && r < 3 && c >= 0 && c < 9) {
+      while (r >= 0 && r < 9 && c >= 0 && c < 3) {
         moves.push(coordsToPos(r, c));
         r += dr;
         c += dc;
@@ -168,61 +168,67 @@ export const RookVsBishopGame = ({
     }
   };
 
-  // Render board
+  // Render board (9x3: 9 rows [1 to 9], 3 columns [A, B, C])
   const renderBoard = () => {
-    const rows = ["A", "B", "C"];
-    const cols = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const rows = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const cols = ["A", "B", "C"];
     return (
-      <div className="inline-grid grid-cols-9 gap-0 border-2 border-gray-700 bg-gray-800 rounded-lg shadow-lg">
-        {rows.map((row) =>
-          cols.map((col) => {
-            const pos = `${row}${col}`;
-            const isLight = (rows.indexOf(row) + col) % 2 === 0;
-            const isPossibleMove = possibleMoves.includes(pos);
-            return (
-              <motion.div
-                key={pos}
-                className={`w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center text-2xl cursor-pointer relative
-                  ${isLight ? "bg-gray-200" : "bg-gray-400"}
-                  ${isPossibleMove ? "border-2 border-blue-500 animate-pulse" : ""}`}
-                onClick={() => {
-                  if (board.rook === pos) handleRookClick();
-                  else handleSquareClick(pos);
-                }}
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.2 }}
-                aria-label={`Клетка ${pos}${isPossibleMove ? ", возможный ход" : ""}`}
-              >
-                <AnimatePresence>
-                  {board.rook === pos && (
-                    <motion.span
-                      key="rook"
-                      initial={{ opacity: 0, scale: 0.5 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.5 }}
-                      transition={{ duration: 0.3 }}
-                      className="text-3xl drop-shadow-[0_0_4px_rgba(0,0,255,0.5)]"
-                    >
-                      ♖
-                    </motion.span>
+      <div className="chessboard-container">
+        <div className="chessboard">
+          {rows.map((row, rowIndex) =>
+            cols.map((col, colIndex) => {
+              const pos = `${col}${row}`;
+              const isLight = (rowIndex + colIndex) % 2 === 0;
+              const isPossibleMove = possibleMoves.includes(pos);
+              return (
+                <motion.div
+                  key={pos}
+                  className={`square ${isLight ? "square-light" : "square-dark"} ${
+                    isPossibleMove ? "outline outline-2 outline-blue-500 animate-pulse" : ""
+                  }`}
+                  onClick={() => {
+                    if (board.rook === pos) handleRookClick();
+                    else handleSquareClick(pos);
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.2 }}
+                  aria-label={`Клетка ${pos}${isPossibleMove ? ", возможный ход" : ""}`}
+                >
+                  <AnimatePresence>
+                    {board.rook === pos && (
+                      <motion.span
+                        key="rook"
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                        transition={{ duration: 0.3 }}
+                        className="piece merida-rook drop-shadow-[0_0_16px_rgba(0,0,255,0.9)]"
+                      />
+                    )}
+                    {board.bishop === pos && (
+                      <motion.span
+                        key="bishop"
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                        transition={{ duration: 0.3 }}
+                        className="piece merida-bishop drop-shadow-[0_0_16px_rgba(255,0,0,0.9)]"
+                      />
+                    )}
+                  </AnimatePresence>
+                  {/* Rank label (left, 1 to 9 for rows) */}
+                  {colIndex === 0 && (
+                    <span className="rank-label">{row}</span>
                   )}
-                  {board.bishop === pos && (
-                    <motion.span
-                      key="bishop"
-                      initial={{ opacity: 0, scale: 0.5 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.5 }}
-                      transition={{ duration: 0.3 }}
-                      className="text-3xl drop-shadow-[0_0_4px_rgba(255,0,0,0.5)]"
-                    >
-                      ♝
-                    </motion.span>
+                  {/* File label (bottom, A to C for columns) */}
+                  {rowIndex === 8 && (
+                    <span className="file-label">{cols[colIndex]}</span>
                   )}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })
-        )}
+                </motion.div>
+              );
+            })
+          )}
+        </div>
       </div>
     );
   };
@@ -232,18 +238,18 @@ export const RookVsBishopGame = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen lunar-bg p-6"
+      className="min-h-screen lunar-bg p-4 flex items-center justify-center"
     >
-      <div className="card max-w-lg mx-auto">
-        <h1 className="text-3xl font-bold mb-6 text-center text-indigo-200">
+      <div className="card max-w-xl mx-auto">
+        <h1 className="text-5xl font-bold mb-8 text-center text-indigo-200">
           Ладья против Слона
         </h1>
 
         {/* Game Rules */}
         {!isGameOver && (
-          <div className="mb-6 text-sm text-gray-300">
-            <h2 className="font-semibold text-lg text-indigo-300 mb-2">Правила:</h2>
-            <ul className="list-disc list-inside space-y-1">
+          <div className="mb-8 text-lg text-gray-300">
+            <h2 className="font-semibold text-2xl text-indigo-300 mb-3">Правила:</h2>
+            <ul className="list-disc list-inside space-y-2">
               <li>Ты управляешь Ладьей (начало: A1). Поймай Слона (начало: C3).</li>
               <li>Ладья ходит по горизонтали или вертикали на любое число клеток.</li>
               <li>Слон ходит по диагонали и старается избегать захвата.</li>
@@ -255,62 +261,138 @@ export const RookVsBishopGame = ({
           </div>
         )}
 
-        {/* Game Status */}
         {!isGameOver && (
           <div className="mb-6 text-center">
-            <p className="text-lg text-gray-300">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            className="btn-primary btn-red"
+            onClick={()=>{
+              setGameState("loss")
+              handleGameOver(false, score);
+            }}
+            aria-label="Остановить игру"
+          >
+            Остановить игру
+          </motion.button>
+          </div>
+        )}
+
+        {/* Game Status */}
+        {!isGameOver && (
+          <div className="mb-8 text-center">
+            <p className="text-2xl text-gray-300">
               Ходов: <span className="font-semibold text-indigo-300">{moves}</span>
             </p>
-            <p className="text-lg text-gray-300">
+            <p className="text-2xl text-gray-300">
               Очки: <span className="font-semibold text-yellow-400">{score}</span>
             </p>
           </div>
         )}
 
         {/* Board */}
-        <div className="mb-6 flex justify-center">{renderBoard()}</div>
+        <div className="mb-8 flex justify-center">{renderBoard()}</div>
 
-        {/* Game Message */}
-        <p
-          className={`mb-6 text-lg ${
-            gameMessage.includes("Победа")
-              ? "text-green-400"
-              : gameMessage.includes("Поражение") || gameMessage.includes("Ничья")
-              ? "text-red-400"
-              : "text-gray-300"
-          }`}
-        >
-          {gameMessage}
-        </p>
+        {/* Game Message (Win/Draw) */}
+        {(gameState === "win" || gameState === "draw") && (
+          <p
+            className={`mb-8 text-2xl ${
+              gameMessage.includes("Победа") ? "text-green-400" : "text-red-400"
+            }`}
+          >
+            {gameMessage}
+          </p>
+        )}
 
-        {/* Game Over Screen */}
-        {isGameOver && (
+        {/* Loss Modal */}
+        <AnimatePresence>
+          {gameState === "loss" && (
+            <motion.div
+              className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div
+                className="loss-modal"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.3 }}
+              >
+                <h2 className="text-4xl font-bold mb-4 text-red-400">
+                  Поражение!
+                </h2>
+                <p className="text-2xl text-gray-300 mb-4">
+                  Слон срубил Ладью!
+                </p>
+                <p className="text-2xl text-gray-300 mb-4">
+                  Финальный счёт: <span className="font-semibold text-yellow-400">{finalScore}</span>
+                </p>
+                {gameScores?.chess?.max > 0 && (
+                  <p className="text-2xl text-gray-300 mb-4">
+                    Лучший результат: <span className="font-semibold text-yellow-400">{gameScores.chess.max}</span>
+                  </p>
+                )}
+                <p className="text-2xl text-gray-300 mb-6">
+                  Сыграно: <span className="font-semibold text-indigo-300">{userPlayed[2] || 0}/3</span>
+                </p>
+                <div className="flex justify-center gap-6">
+                  {userPlayed[2] < 3 && (
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="btn-primary btn-green text-xl px-8 py-3"
+                      onClick={restartGame}
+                      aria-label="Переиграть"
+                    >
+                      Переиграть
+                    </motion.button>
+                  )}
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="btn-primary btn-gray text-xl px-8 py-3"
+                    onClick={goToMenu}
+                    aria-label="Вернуться в меню"
+                  >
+                    В меню
+                  </motion.button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Game Over Screen (Win/Draw) */}
+        {isGameOver && (gameState === "win" || gameState === "draw") && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
             className="card"
           >
-            <h2 className="text-2xl font-bold mb-4 text-indigo-200">
+            <h2 className="text-4xl font-bold mb-6 text-indigo-200">
               Игра окончена!
             </h2>
-            <p className="text-lg text-gray-300 mb-2">
+            <p className="text-2xl text-gray-300 mb-3">
               Финальный счёт: <span className="font-semibold text-yellow-400">{finalScore}</span>
             </p>
             {gameScores?.chess?.max > 0 && (
-              <p className="text-lg text-gray-300 mb-2">
+              <p className="text-2xl text-gray-300 mb-3">
                 Лучший результат: <span className="font-semibold text-yellow-400">{gameScores.chess.max}</span>
               </p>
             )}
-            <p className="text-lg text-gray-300 mb-4">
+            <p className="text-2xl text-gray-300 mb-6">
               Сыграно: <span className="font-semibold text-indigo-300">{userPlayed[2] || 0}/3</span>
             </p>
-            <div className="flex justify-center gap-3">
+            <div className="flex justify-center gap-6">
               {userPlayed[2] < 3 && (
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
-                  className="btn-primary btn-green"
+                  className="btn-primary btn-green text-xl px-8 py-3"
                   onClick={restartGame}
                   aria-label="Переиграть"
                 >
@@ -320,7 +402,7 @@ export const RookVsBishopGame = ({
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="btn-primary btn-gray"
+                className="btn-primary btn-gray text-xl px-8 py-3"
                 onClick={goToMenu}
                 aria-label="Вернуться в меню"
               >

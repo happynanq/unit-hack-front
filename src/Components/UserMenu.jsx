@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MainMenu } from "./vagonGame/MainMenu";
 import { EggDropGame } from "./EggGame/EggDropGame";
 import { RookVsBishopGame } from "./ChessGame/RookVsBishopGame";
 import { MoonStoneGame } from "./StoneGame/MoonStoneGame";
 import { Prize } from "./Prize/Prize";
+import { MerchPage } from "./MerchPage/MerchPage";
 import { useAppContext } from "../Context/AppContext";
 import { motion } from "framer-motion";
 
@@ -30,6 +31,8 @@ const calculateScore = (gameId, attempts, win) => {
 const getGameName = { 0: "train", 1: "eggs", 2: "chess", 3: "stones" };
 
 export const UserMenu = () => {
+  const { userId, nickname, userPlayed, updateUserPlayed, upScore, sumScore } = useAppContext();
+
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
@@ -39,7 +42,17 @@ export const UserMenu = () => {
   const [isWin, setIsWin] = useState(false);
   const [score, setScore] = useState(0);
   const [showPrize, setShowPrize] = useState(false);
-  const { userId, nickname, userPlayed, updateUserPlayed } = useAppContext();
+  const [showMerch, setShowMerch] = useState(false);
+
+  // Initialize gameScores from upScore
+  useEffect(() => {
+    setGameScores({
+      train: { max: upScore[0] || 0, prev: upScore[0] || 0 },
+      eggs: { max: upScore[1] || 0, prev: upScore[1] || 0 },
+      chess: { max: upScore[2] || 0, prev: upScore[2] || 0 },
+      stones: { max: upScore[3] || 0, prev: upScore[3] || 0 },
+    });
+  }, [upScore]);
 
   const games = [
     { name: "Плацкартный вагон", id: 0 },
@@ -56,6 +69,7 @@ export const UserMenu = () => {
     setScore(0);
     setFinalScore(0);
     setShowPrize(false);
+    setShowMerch(false);
   };
 
   const restartGame = () => {
@@ -74,6 +88,7 @@ export const UserMenu = () => {
     setScore(0);
     setFinalScore(0);
     setShowPrize(false);
+    setShowMerch(false);
   };
 
   const goToMenu = () => {
@@ -93,6 +108,7 @@ export const UserMenu = () => {
     setFinalScore(0);
     setChosenGame(null);
     setShowPrize(false);
+    setShowMerch(false);
   };
 
   const handleGameOver = (win, attempts, gameId) => {
@@ -141,14 +157,9 @@ export const UserMenu = () => {
     req();
   };
 
-  const totalScore = Object.values(gameScores).reduce(
-    (sum, game) => sum + (game?.max || 0),
-    0
-  );
-
   return (
     <div className="min-h-screen lunar-bg">
-      {!isGameStarted && !isGameOver && !showPrize && (
+      {!isGameStarted && !isGameOver && !showPrize && !showMerch && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -162,9 +173,9 @@ export const UserMenu = () => {
             <div className="mb-6 text-lg text-center text-gray-300">
               Пользователь: <span className="font-semibold">{nickname}</span>
             </div>
-            {totalScore > 0 && (
+            {sumScore > 0 && (
               <div className="mb-6 text-lg text-center text-yellow-400">
-                Общий счёт: <span className="font-semibold">{totalScore}</span>
+                Общий счёт: <span className="font-semibold">{sumScore}</span>
               </div>
             )}
             {games.map((game) => (
@@ -210,6 +221,15 @@ export const UserMenu = () => {
               aria-label="Посмотреть приз"
             >
               Посмотреть приз
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="btn-primary btn-green mt-4 w-full"
+              onClick={() => setShowMerch(true)}
+              aria-label="Перейти к мерчу"
+            >
+              Мерч
             </motion.button>
           </div>
         </motion.div>
@@ -285,7 +305,8 @@ export const UserMenu = () => {
         />
       )}
 
-      {showPrize && <Prize goToMenu={goToMenu} totalScore={totalScore} />}
+      {showPrize && <Prize goToMenu={goToMenu} totalScore={sumScore} />}
+      {showMerch && <MerchPage goToMenu={goToMenu} totalScore={sumScore} />}
     </div>
   );
 };

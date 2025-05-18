@@ -3,7 +3,7 @@ import { GameMenu } from "./GameMenu";
 import { GameOver } from "./GameOver";
 import { Carriage } from "./VAGON/Carriage";
 import { motion } from "framer-motion";
-
+import "./vagon.css"
 export const MainMenu = ({
   gameScores,
   score,

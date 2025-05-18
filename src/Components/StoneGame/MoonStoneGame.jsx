@@ -262,7 +262,22 @@ export const MoonStoneGame = ({
             </div>
           </div>
         )}
-
+{!isGameOver && (
+          <div className="mb-6 text-center">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            className="btn-primary btn-red"
+            onClick={()=>{
+              // setGameState("loss")
+              handleGameOver(false, score);
+            }}
+            aria-label="Остановить игру"
+          >
+            Остановить игру
+          </motion.button>
+          </div>
+        )}
         {/* Game Status */}
         {playerTurn !== null && !isGameOver && (
           <div className="mb-6 text-center">

@@ -10,29 +10,58 @@ export const AppProvider = ({ children }) => {
   const [userId, setUserId] = useState(null);
   const [nickname, setNickname] = useState("");
   const [userPlayed, setUserPlayed] = useState([0, 0, 0, 0]); // [train, eggs, chess, stones]
-
+  const [upScore, setUpScore] = useState([0, 0, 0, 0])
+  const [sumScore, setSumScore] = useState(0)
   // Initialize web app and fetch user data
   useEffect(() => {
     const start = async () => {
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
-      const userId = urlParams.get("userId");
+      const userId = +urlParams.get("userId");
       const nickname = urlParams.get("nickname");
 
       setNickname(nickname || "Guest");
       setUserId(userId);
       setUserPlayed([0,0,0,0])
-      // try {
-      //   const response = await fetch("http://5.35.80.93:8000/get_data");
-      //   if (!response.ok) {
-      //     console.error("Failed to fetch user data");
-      //     return;
-      //   }
-      //   const data = await response.json();
-      //   setUserPlayed(data.userPlayed || [0, 0, 0, 0]); // Fallback to zeros
-      // } catch (error) {
-      //   console.error("Error fetching user data:", error);
-      // }
+      try {
+        const response = await fetch(`http://5.35.80.93:8000/get_data/${userId}`).then(r=>{
+          
+
+          return r.json()
+        }).then(r=>{
+          console.log("RRR", r)
+          if(r == undefined || r.length != 4){
+            setUserPlayed([0, 0, 0, 0])
+          }else{
+          setUserPlayed(r )
+
+          }
+          
+        })
+        await fetch("http://5.35.80.93:8000/scoreboard").then(r=>{
+          if(!r.ok){
+            throw new Error("Error from getting score app context")
+          }
+          return r.json()
+        }).then(r=>{
+          let sum = 0
+          let arr = [0, 0, 0, 0]
+
+          r?.scoreboards.map((e, i)=>{
+            e.scores.map(e=>{
+              if(e.userId === userId){
+                console.log("EE", e)
+                arr[i] = e.score
+                sum += e.score
+              }
+            })
+          })
+          setUpScore(arr)
+          setSumScore(sum)
+        })
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
     };
     start();
   }, []);
@@ -45,6 +74,7 @@ export const AppProvider = ({ children }) => {
       console.log("PLAYED: ", newPlayed)
       return newPlayed;
     });
+    console.log("UpdatetPlayedbrrr")
 
     try {
       const response = await fetch("http://5.35.80.93:8000/update_played", {
@@ -56,10 +86,16 @@ export const AppProvider = ({ children }) => {
         headers: {
           "Content-Type": "application/json",
         },
-      });
-      if (!response.ok) {
-        console.error("Failed to update userPlayed");
-      }
+      }).then(r=>{
+        if(!r.ok){
+          throw new Error("Error while update post")
+        }
+        return r.json()
+      }).then(r=>{
+        console.log(r)
+      })
+      
+      
     } catch (error) {
       console.error("Error updating userPlayed:", error);
     }
@@ -67,7 +103,7 @@ export const AppProvider = ({ children }) => {
 
   return (
     <AppContext.Provider
-      value={{ userId, setUserId, nickname, userPlayed, updateUserPlayed }}
+      value={{ userId, setUserId, nickname, userPlayed, updateUserPlayed, upScore, sumScore }}
     >
       {children}
     </AppContext.Provider>
