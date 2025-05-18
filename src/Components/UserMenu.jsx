@@ -2,9 +2,10 @@ import { useState } from "react";
 import { MainMenu } from "./vagonGame/MainMenu";
 import { EggDropGame } from "./EggGame/EggDropGame";
 import { useAppContext } from "../Context/AppContext";
+import { RookVsBishopGame } from "./ChessGame/RookVsBishopGame";
 
-const calculateScore = (gameId, attempts, WW) => {
-  if(!WW){return 0}
+const calculateScore = (gameId, attempts, win) => {
+  if (!win) return 0;
   if (gameId === 0) {
     // Train game: 500 points for ≤6 attempts, -50 per attempt after
     if (attempts <= 6) return 500;
@@ -12,15 +13,19 @@ const calculateScore = (gameId, attempts, WW) => {
     return Math.max(score, 0);
   } else if (gameId === 1) {
     // Egg game: 500 points for ≤14 attempts, -20 per attempt after
-    console.log("SCORING: ",attempts, gameId )
     if (attempts <= 14) return 500;
     const score = 500 - (attempts - 14) * 20;
+    return Math.max(score, 0);
+  } else if (gameId === 2) {
+    // Chess game: 500 points for ≤6 attempts, -25 per attempt after
+    if (attempts <= 6) return 500;
+    const score = 500 - (attempts - 6) * 25;
     return Math.max(score, 0);
   }
   return 0;
 };
 
-const getGameName = { 1: "train", 2: "eggs" };
+const getGameName = { 0: "train", 1: "eggs", 2: "chess" };
 
 export const UserMenu = () => {
   const [isGameStarted, setIsGameStarted] = useState(false);
@@ -34,10 +39,11 @@ export const UserMenu = () => {
   const { userId, nickname } = useAppContext();
 
   const games = [
-    { name: "Плацкартный вагон", id: 0 },
-    { name: "Яички", id: 1 },
-    { name: "ВАдим балахонов", id: 2 },
-  ];
+  { name: "Плацкартный вагон", id: 0 },
+  { name: "Яички", id: 1 },
+  { name: "Ладья против Слона", id: 2 },
+  { name: "Камешки", id: 3 },
+];
 
   const startGame = (gameId) => {
     setChosenGame(gameId);
@@ -187,6 +193,22 @@ export const UserMenu = () => {
           restartGame={restartGame}
           goToMenu={goToMenu}
           handleGameOver={(win, score) => handleGameOver(win, score, 1)}
+          isGameOver={isGameOver}
+          isGameStarted={isGameStarted}
+        />
+      )}
+
+      {chosenGame === 2 && (
+        <RookVsBishopGame
+          gameScores={gameScores}
+          score={score}
+          setScore={setScore}
+          finalScore={finalScore}
+          setFinalScore={setFinalScore}
+          startGame={startGame}
+          restartGame={restartGame}
+          goToMenu={goToMenu}
+          handleGameOver={(win, score) => handleGameOver(win, score, 2)}
           isGameOver={isGameOver}
           isGameStarted={isGameStarted}
         />

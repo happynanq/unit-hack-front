@@ -171,7 +171,8 @@ export const Carriage = ({ totalSeats, setScore, setIsGameOver, score }) => {
   return (
     <div className="p-2 max-w-fit mx-auto border border-gray-300 rounded">
       <h1 className="text-xl font-bold mb-2 text-center">Плацкартный вагон, занадан: {answerSeat}</h1>
-      <h1 className="text-xl font-bold mb-2 text-center"> находимся на: {currentSeat}</h1>
+      {/* <h1 className="text-xl font-bold mb-2 text-center"> находимся на: {currentSeat}</h1> */}
+      <h1 className="text-xl font-bold mb-2 text-center"> находимся на: хуй там а не ответ</h1>
       <div className="mb-2 text-lg font-semibold text-center">
         Баллы: {score}
       </div>

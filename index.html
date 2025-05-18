@@ -27,6 +27,14 @@
         50% { opacity: 0.5; }
         100% { opacity: 0.3; }
       }
+      @keyframes pulse {
+        0% { border-color: rgba(59, 130, 246, 0.5); }
+        50% { border-color: rgba(59, 130, 246, 1); }
+        100% { border-color: rgba(59, 130, 246, 0.5); }
+      }
+      .animate-pulse {
+        animation: pulse 1.5s infinite;
+      }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + React</title>

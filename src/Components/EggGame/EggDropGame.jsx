@@ -84,30 +84,26 @@ export const EggDropGame = ({
 
   // Handle final guess submission
   const handleFinalGuess = (e) => {
-  e.preventDefault();
-  const guess = parseInt(finalGuess);
+    e.preventDefault();
+    const guess = parseInt(finalGuess);
 
-  // Input validation
-  if (isNaN(guess) || guess < 1 || guess > 100) {
-    setGameMessage("Пожалуйста, введи число от 1 до 100.");
-    return;
-  }
+    if (isNaN(guess) || guess < 1 || guess > 100) {
+      setGameMessage("Пожалуйста, введи число от 1 до 100.");
+      return;
+    }
 
-  // Check if guess is correct
-  const isCorrect = guess === criticalFloor;
-  const finalScore = isCorrect ? score : 0;
-  console.log("finalScore", finalScore, "isCorrect", isCorrect)
-  console.log("guess", guess, "criticalFloor", criticalFloor );
-  
-  setFinalScore(finalScore);
-  handleGameOver(isCorrect, attempts); // Pass attempts instead of score
+    const isCorrect = guess === criticalFloor;
+    const finalScore = isCorrect ? score : 0;
 
-  setGameMessage(
-    isCorrect
-      ? `Поздравляем! Ты угадал критический этаж ${criticalFloor}! Очки: ${finalScore}`
-      : `Неверно! Критический этаж был ${criticalFloor}. Очки: 0`
-  );
-};
+    setFinalScore(finalScore);
+    handleGameOver(isCorrect, attempts);
+
+    setGameMessage(
+      isCorrect
+        ? `Поздравляем! Ты угадал критический этаж ${criticalFloor}! Очки: ${finalScore}`
+        : `Неверно! Критический этаж был ${criticalFloor}. Очки: 0`
+    );
+  };
 
   return (
     <div className="p-4 max-w-md mx-auto text-center">
