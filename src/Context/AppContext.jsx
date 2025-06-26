@@ -17,12 +17,23 @@ export const AppProvider = ({ children }) => {
     const start = async () => {
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
-      const userId = +urlParams.get("userId");
+      let userId = +urlParams.get("userId"); // ! changes only if fake user
       const nickname = urlParams.get("nickname");
-
-      setNickname(nickname || "Guest");
+      const oldId = localStorage.getItem("gameId")
+      console.log("old id, ",oldId);
       setUserId(userId || 0);
+      
+      if(oldId != null && userId != 0 && oldId != userId ){
+        userId = oldId
+        setUserId(oldId) 
+        console.log("попытка изменить айди!!")
+      }
+      setNickname(nickname || "Guest");
       setUserPlayed([0,0,0,0])
+      if(userId != 0 && oldId == null){
+        localStorage.setItem("gameId", userId )
+
+      }
       try {
         const response = await fetch(`http://5.35.80.93:8000/get_data/${userId}`).then(r=>{
           

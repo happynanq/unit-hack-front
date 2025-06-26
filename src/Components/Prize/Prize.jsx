@@ -5,7 +5,7 @@ import webP from "../../assets/ticket.png"
 export const Prize = ({ goToMenu, totalScore }) => {
   const { nickname, userPlayed } = useAppContext();
   const totalAttempts = userPlayed.reduce((sum, count) => sum + count, 0);
-  
+  const {userId} = useAppContext()
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -25,6 +25,10 @@ export const Prize = ({ goToMenu, totalScore }) => {
         </p>
         <p className="text-lg text-gray-300 mb-4">
           Вы добились вкусных подарков, подойдите к организаторам и покажите им золотой билет!
+        </p>
+        <p>
+          ваш id: {userId}
+
         </p>
         <motion.img
           src={webP}
