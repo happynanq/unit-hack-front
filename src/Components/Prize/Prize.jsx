@@ -24,7 +24,7 @@ export const Prize = ({ goToMenu, totalScore }) => {
           игр и заработали <span className="font-semibold text-yellow-400">{totalScore} </span>суммарно!
         </p>
         <p className="text-lg text-gray-300 mb-4">
-          Подойдите к организаторам и покажите им золотой билет!
+          Вы добились вкусных подарков, подойдите к организаторам и покажите им золотой билет!
         </p>
         <motion.img
           src={webP}

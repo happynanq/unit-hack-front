@@ -7,6 +7,7 @@ import { Prize } from "./Prize/Prize";
 import { MerchPage } from "./MerchPage/MerchPage";
 import { useAppContext } from "../Context/AppContext";
 import { motion } from "framer-motion";
+import logo_LE from "../assets/logo_LE.jpg"
 
 const calculateScore = (gameId, attempts, win) => {
   if (!win) return 0;
@@ -54,10 +55,10 @@ export const UserMenu = () => {
   }, [upScore]);
 
   const games = [
-    { name: "Плацкартный вагон", id: 0 },
     { name: "Несправедливая гравитация", id: 1 },
     { name: "Ладья против Слона", id: 2 },
     { name: "Камешки", id: 3 },
+    { name: "Плацкартный вагон", id: 0 },
   ];
 
   const startGame = (gameId) => {
@@ -157,6 +158,7 @@ export const UserMenu = () => {
 
   return (
     <div className="min-h-screen lunar-bg">
+      
       {!isGameStarted && !isGameOver && !showPrize && !showMerch && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -164,9 +166,17 @@ export const UserMenu = () => {
           transition={{ duration: 0.5 }}
           className="p-6 max-w-lg mx-auto"
         >
+          
           <div className="card">
+            <div className="absolute top-4 left-4">
+              <img
+                src={logo_LE}
+                alt="Логотип"
+                className="w-16 h-16 object-contain"
+              />
+            </div>
             <h1 className="text-3xl font-bold mb-6 text-center text-indigo-200">
-              Космические Игры
+              Игры
             </h1>
             <div className="mb-6 text-lg text-center text-gray-300">
               Пользователь: <span className="font-semibold">{nickname}</span>
@@ -220,7 +230,8 @@ export const UserMenu = () => {
             >
               Посмотреть приз
             </motion.button>
-            <motion.button
+            {/* // !ТУТ БЫЛ МЕРЧ 
+             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               className="btn-primary btn-green mt-4 w-full"
@@ -228,7 +239,7 @@ export const UserMenu = () => {
               aria-label="Перейти к мерчу"
             >
               Мерч за счёт
-            </motion.button>
+            </motion.button> */}
           </div>
         </motion.div>
       )}
