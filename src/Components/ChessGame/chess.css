@@ -1,0 +1,230 @@
+.chessboard-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  overflow-x: auto;
+
+}
+
+.chessboard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  max-width: 576px;
+  height: calc(576px * 3);
+  gap: 0;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: linear-gradient(to bottom, #1e1b4b, #111827);
+  box-sizing: border-box;
+  border-spacing: 0;
+  border-collapse: collapse;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.8), 0 0 40px rgba(147, 197, 253, 0.6);
+  background-image: url('https://via.placeholder.com/600x1800?text=Starry+Cosmic');
+  background-size: cover;
+  border: 2px solid transparent;
+  border-image: linear-gradient(to right, #6366f1, #93c5fd) 1;
+}
+
+.square {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1/1;
+  position: relative;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  border: none;
+}
+
+.square-light {
+  background-color: rgba(229, 231, 235, 0.2);
+  backdrop-filter: blur(4px);
+}
+
+.square-dark {
+  background-color: rgba(75, 85, 99, 0.2);
+  backdrop-filter: blur(4px);
+}
+
+.piece {
+  width: 100%;
+  height: 100%;
+  display: block;
+  text-align: center;
+  line-height: 1;
+  font-family: 'Merida', sans-serif;
+  user-select: none;
+}
+
+.merida-rook::before {
+  content: '\2656';
+  font-size: 200px; 
+  display: block;
+  line-height: 1;
+}
+
+.merida-bishop::before {
+  content: '\2657';
+  font-size: 200px; 
+  display: block;
+  line-height: 1;
+}
+
+.rank-label, .file-label {
+  position: absolute;
+  font-size: 1.6rem;
+  color: #c7d2fe;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+}
+
+.rank-label {
+  left: -2.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.file-label {
+  bottom: -3rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.loss-modal {
+  background-color: rgba(31, 41, 55, 0.8);
+  backdrop-filter: blur(20px);
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.8), 0 0 40px rgba(147, 197, 253, 0.6);
+  padding: 2rem;
+  border: 1px solid #4b5563;
+  text-align: center;
+  max-width: 90%;
+  width: 400px;
+}
+
+@media (max-width: 400px) {
+  .card {
+    padding: 0.5rem;
+  }
+
+  .chessboard-container {
+    width: 100%;
+    height: auto;
+    padding: 0;
+    padding-left: 2.5rem;
+    padding-right : 0.5rem
+  }
+
+  .chessboard {
+    max-width: none;
+    width: 95vw;
+    height: calc(95vw * 3);
+    border-radius: 0.75rem;
+  }
+
+  .square {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1/1;
+  }
+
+  .merida-rook::before, .merida-bishop::before {
+    font-size: calc(95vw / 3); 
+  }
+
+  .rank-label, .file-label {
+    font-size: 1.2rem;
+    left: -2rem;
+  }
+
+  .file-label {
+    bottom: -2.5rem;
+  }
+
+  .loss-modal {
+    width: 90%;
+    padding: 1.5rem;
+  }
+}
+
+/* тут заебись */
+@media (max-width: 768px) {
+  .card {
+    padding: 0.75rem;
+    /* padding-right : 6rem */
+
+  }
+
+  .chessboard-container {
+    padding-left: 2.5rem;
+    padding-right : 0.5rem
+
+  }
+
+  .chessboard {
+    max-width: 450px;
+    width: 100%;
+    height: calc(450px * 3);
+  }
+
+  .square {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1/1;
+  }
+
+  .merida-rook::before, .merida-bishop::before {
+    font-size: 150px; 
+  }
+
+  .loss-modal {
+    width: 80%;
+  }
+}
+
+
+@media (max-width: 500px) {
+  .chessboard-container {
+    padding: 0; /* Убираем фиксированные отступы */
+    /* overflow-x: auto;  */
+  }
+
+  .chessboard {
+    max-width: none; /* Убираем ограничение по ширине */
+    width: 95vw; /* Ширина в процентах от экрана */
+    height: calc(95vw * 3); /* Высота сохраняет пропорции */
+    border-radius: 0.75rem; /* Скругление углов */
+  }
+
+  .square {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1/1;
+  }
+
+  .merida-rook::before,
+  .merida-bishop::before {
+    font-size: calc(95vw / 3); /* Размер фигур зависит от ширины экрана */
+  }
+
+  .rank-label,
+  .file-label {
+    font-size: 1.2rem; /* Уменьшаем размер текста */
+    left: -2rem; /* Корректируем позицию меток */
+  }
+
+  .file-label {
+    bottom: -2.5rem;
+  }
+}

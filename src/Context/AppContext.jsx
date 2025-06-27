@@ -70,8 +70,23 @@ export const AppProvider = ({ children }) => {
           setUpScore(arr)
           setSumScore(sum)
         })
-      } catch (error) {
-        console.error("Error fetching user data:", error);
+      } catch (e) {
+        await fetch("http://5.35.80.93:8000/error", {
+            method:"POST", 
+            body: JSON.stringify({
+              name:e.name, 
+              message:e.message,
+              when: "AppContext 1",
+            }), 
+            headers: {
+            "Content-Type": "application/json",
+          },
+            
+        }).catch((e)=>{
+          console.error("очень плохо.. АПИ СДОХЛА:", e);
+
+        })
+        console.error("Error fetching user data:", e);
       }
     };
     start();
@@ -106,8 +121,24 @@ export const AppProvider = ({ children }) => {
       })
       
       
-    } catch (error) {
-      console.error("Error updating userPlayed:", error);
+    } catch (e) {
+      await fetch("http://5.35.80.93:8000/error", {
+          method:"POST", 
+          body: JSON.stringify({
+            name:e.name, 
+            message:e.message,
+            when: "AppContext 2",
+          }), 
+          headers: {
+          "Content-Type": "application/json",
+        },
+          
+      }).catch((e)=>{
+        console.error("очень плохо.. АПИ СДОХЛА:", e);
+
+      })
+    
+      console.error("Error updating userPlayed:", e);
     }
   };
 

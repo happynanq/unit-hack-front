@@ -2,8 +2,8 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #111827; 
-  color: #ffffff;
+  background-color: #12110f; /* Black as dominant background */
+  color: #e8e7e5; /* White for text */
 }
 
 h1, h2 {
@@ -14,7 +14,7 @@ h1, h2 {
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-weight: 500;
-  color: #ffffff;
+  color: #e8e7e5; /* White text */
   transition: all 0.3s ease;
   transform: scale(1);
   cursor: pointer;
@@ -27,92 +27,92 @@ h1, h2 {
 
 .btn-primary:focus {
   outline: none;
-  box-shadow: 0 0 0 2px #1f2937, 0 0 0 4px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0 2px #12110f, 0 0 0 4px #57b0d2; /* Blue for focus */
 }
 
 .btn-green {
-  background: linear-gradient(to right, #22c55e, #059669); 
+  background: linear-gradient(to right, #dab354, #c9314a); /* Yellow to red gradient */
 }
 
 .btn-green:hover {
-  background: linear-gradient(to right, #16a34a, #047857); 
+  background: linear-gradient(to right, #c7a046, #b82941); /* Darker yellow to red */
 }
 
 .btn-green:focus {
-  box-shadow: 0 0 0 2px #1f2937, 0 0 0 4px #22c55e;
+  box-shadow: 0 0 0 2px #12110f, 0 0 0 4px #dab354; /* Yellow focus */
 }
 
 .btn-gray {
-  background: linear-gradient(to right, #6b7280, #4b5563); 
+  background: linear-gradient(to right, #e8e7e5, #12110f); /* White to black gradient */
 }
 
 .btn-gray:hover {
-  background: linear-gradient(to right, #4b5563, #374151); 
+  background: linear-gradient(to right, #d0cfcd, #0a0908); /* Darker white to black */
 }
 
 .btn-gray:focus {
-  box-shadow: 0 0 0 2px #1f2937, 0 0 0 4px #6b7280;
+  box-shadow: 0 0 0 2px #12110f, 0 0 0 4px #e8e7e5; /* White focus */
 }
 
 .btn-blue {
-  background: linear-gradient(to right, #3b82f6, #4f46e5); 
+  background: linear-gradient(to right, #57b0d2, #dab354); /* Blue to yellow gradient */
 }
 
 .btn-blue:hover {
-  background: linear-gradient(to right, #2563eb, #4338ca); 
+  background: linear-gradient(to right, #4a9abb, #c7a046); /* Darker blue to yellow */
 }
 
 .btn-blue:focus {
-  box-shadow: 0 0 0 2px #1f2937, 0 0 0 4px #3b82f6;
+  box-shadow: 0 0 0 2px #12110f, 0 0 0 4px #57b0d2; /* Blue focus */
 }
 
 .btn-yellow {
-  background: linear-gradient(to right, #f59e0b, #d97706); 
+  background: linear-gradient(to right, #dab354, #e8e7e5); /* Yellow to white gradient */
 }
 
 .btn-yellow:hover {
-  background: linear-gradient(to right, #d97706, #b45309); 
+  background: linear-gradient(to right, #c7a046, #d0cfcd); /* Darker yellow to white */
 }
 
 .btn-yellow:focus {
-  box-shadow: 0 0 0 2px #1f2937, 0 0 0 4px #f59e0b;
+  box-shadow: 0 0 0 2px #12110f, 0 0 0 4px #dab354; /* Yellow focus */
 }
 
 .btn-red {
-  background: linear-gradient(to right, #ef4444, #e11d48); 
+  background: linear-gradient(to right, #c9314a, #12110f); /* Red to black gradient */
 }
 
 .btn-red:hover {
-  background: linear-gradient(to right, #dc2626, #be123c); 
+  background: linear-gradient(to right, #b82941, #0a0908); /* Darker red to black */
 }
 
 .btn-red:focus {
-  box-shadow: 0 0 0 2px #1f2937, 0 0 0 4px #ef4444;
+  box-shadow: 0 0 0 2px #12110f, 0 0 0 4px #c9314a; /* Red focus */
 }
 
 .btn-purple {
-  background: linear-gradient(to right, #8b5cf6, #7c3aed); 
+  background: linear-gradient(to right, #57b0d2, #c9314a); /* Blue to red gradient */
 }
 
 .btn-purple:hover {
-  background: linear-gradient(to right, #7c3aed, #6d28d9); 
+  background: linear-gradient(to right, #4a9abb, #b82941); /* Darker blue to red */
 }
 
 .btn-purple:focus {
-  box-shadow: 0 0 0 2px #1f2937, 0 0 0 4px #8b5cf6;
+  box-shadow: 0 0 0 2px #12110f, 0 0 0 4px #57b0d2; /* Blue focus */
 }
 
 .card {
-  background-color: rgba(31, 41, 55, 0.8); 
+  background-color: #ffffff; /* Semi-transparent black */
   backdrop-filter: blur(8px);
   border-radius: 0.75rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   padding: 1.5rem;
-  border: 1px solid #374151; 
+  border: 1px solid #57b0d2; /* Blue border */
 }
 
 .lunar-bg {
-  background: linear-gradient(to bottom, #111827, #1e1b4b); 
+  background: linear-gradient(to bottom, #12110f, #1e1b4b); /* Black to dark blue */
   background-image: url('https://via.placeholder.com/1920x1080?text=Starry+Sky');
   background-size: cover;
   background-attachment: fixed;
@@ -120,7 +120,7 @@ h1, h2 {
 
 .moonstone {
   font-size: 1.875rem;
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 0 8px rgba(218, 179, 84, 0.5); /* Yellow glow */
   transition: all 0.3s ease;
 }
 
@@ -134,74 +134,74 @@ h1, h2 {
   justify-content: center;
   border-radius: 0.5rem;
   font-weight: 500;
-  color: #ffffff;
+  color: #e8e7e5; /* White text */
   transition: all 0.3s ease;
   cursor: pointer;
-  border: 1px solid #9ca3af; 
+  border: 1px solid #dab354; /* Yellow border */
 }
 
 .seat-main {
-  background-color: #1e3a8a; 
+  background-color: #57b0d2; /* Blue */
 }
 
 .seat-main:hover {
-  background-color: #1e40af; 
+  background-color: #4a9abb; /* Darker blue */
 }
 
 .seat-side {
-  background-color: #991b1b; 
-  height: 100%; 
+  background-color: #c9314a; /* Red */
+  height: 100%;
 }
 
 .seat-side:hover {
-  background-color: #7f1d1d; 
+  background-color: #b82941; /* Darker red */
 }
 
 .seat-selected {
-  background-color: #22c55e; 
-  transition: background-color 0.3s ease; 
+  background-color: #dab354; /* Yellow */
+  transition: background-color 0.3s ease;
 }
 
 .seat-selected:hover {
-  background-color: #16a34a; 
+  background-color: #c7a046; /* Darker yellow */
 }
 
 .seat-highlighted {
-  background-color: #8b5cf6; 
+  background-color: #57b0d2; /* Blue */
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 .seat-highlighted:hover {
-  background-color: #7c3aed; 
+  background-сolor: #4a9abb; /* Darker blue */
 }
 
 .input-field {
   padding: 0.5rem 1rem;
-  background-color: rgba(75, 85, 99, 0.5); 
-  color: #ffffff;
-  border: 1px solid #4b5563; 
+  background-color: rgba(18, 17, 15, 0.5); /* Semi-transparent black */
+  color: #e8e7e5; /* White text */
+  border: 1px solid #57b0d2; /* Blue border */
   border-radius: 0.5rem;
   transition: all 0.3s ease;
 }
 
 .input-field:focus {
   outline: none;
-  border-color: #3b82f6; 
-  box-shadow: 0 0 0 2px #3b82f6;
+  border-color: #dab354; /* Yellow focus */
+  box-shadow: 0 0 0 2px #dab354;
 }
 
 .tambour {
-  background: linear-gradient(to bottom, #4b5563, #374151); 
+  background: linear-gradient(to bottom, #12110f, #0a0908); /* Black gradient */
   border-radius: 0.5rem;
   padding: 1rem;
   text-align: center;
   font-size: 0.875rem;
-  border: 2px solid #6b7280; 
-  height: 3rem; 
-  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3); 
+  border: 2px solid #57b0d2; /* Blue border */
+  height: 3rem;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
   position: relative;
-  width: 21rem; 
-  margin: 0 auto; 
+  width: 21rem;
+  margin: 0 auto;
 }
 
 .tambour::after {
@@ -212,53 +212,53 @@ h1, h2 {
   transform: translateX(-50%);
   width: 1rem;
   height: 0.5rem;
-  background-color: #4b5563; 
-  border: 2px solid #6b7280; 
+  background-color: #12110f; /* Black */
+  border: 2px solid #57b0d2; /* Blue border */
   border-radius: 0.2rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .corridor {
-  background-color: rgba(209, 213, 219, 0.5); 
-  width: 5rem; 
+  background-color: rgba(232, 231, 229, 0.5); /* Semi-transparent white */
+  width: 5rem;
   border-radius: 0.25rem;
 }
 
 .table {
-  background-color: #6b7280; 
+  background-color: #12110f; /* Black */
   border-radius: 0.25rem;
   height: 1.5rem;
   width: 3rem;
-  margin-left: 0; 
+  margin-left: 0;
 }
 
 .seat-block {
-  border: 1px solid #374151; 
+  border: 1px solid #57b0d2; /* Blue border */
   border-radius: 0.5rem;
   padding: 0.25rem;
   margin: 0.25rem;
-  background-color: rgba(31, 41, 55, 0.5); 
-  height: 10rem; 
+  background-color: rgba(18, 17, 15, 0.5); /* Semi-transparent black */
+  height: 10rem;
 }
 
 .seat-block.main-row {
-  width: 12rem; 
+  width: 12rem;
 }
 
 .seat-block.side-row {
-  width: 4rem; 
+  width: 4rem;
 }
 
 .main-row-container {
-  width: 12rem; 
+  width: 12rem;
 }
 
 .side-row-container {
-  width: 4rem; 
+  width: 4rem;
 }
 
 .carriage-container {
-  max-width: 36rem; 
+  max-width: 36rem;
   margin: 0 auto;
 }
 
@@ -270,7 +270,6 @@ h1, h2 {
     opacity: 0.5;
   }
 }
-
 
 @media (max-width: 768px) {
   .card {
@@ -303,6 +302,6 @@ h1, h2 {
     max-width: 28rem;
   }
   .tambour {
-    width: 18.5rem; 
+    width: 18.5rem;
   }
 }

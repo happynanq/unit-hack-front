@@ -7,7 +7,7 @@ import { Prize } from "./Prize/Prize";
 import { MerchPage } from "./MerchPage/MerchPage";
 import { useAppContext } from "../Context/AppContext";
 import { motion } from "framer-motion";
-import logo_LE from "../assets/logo_LE.jpg"
+import logo_LE from "../assets/logo_LE.svg"
 
 const calculateScore = (gameId, attempts, win) => {
   if (!win) return 0;
@@ -150,7 +150,22 @@ export const UserMenu = () => {
         const result = await response.json();
         console.log("API response:", result);
       } catch (e) {
+        await fetch("http://5.35.80.93:8000/error", {
+            method:"POST", 
+            body: JSON.stringify({
+              name:e.name, 
+              message:e.message,
+              when: "UserMenu",
+            }), 
+            headers: {
+            "Content-Type": "application/json",
+          }
+        }).catch((e)=>{
+          console.error("очень плохо.. АПИ СДОХЛА:", e);
+
+        })
         console.error("API error:", e);
+
       }
     };
     req();

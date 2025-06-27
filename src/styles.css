@@ -1,22 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Orbitron:wght@700&display=swap');
 
-
-@font-face {
-  font-family: 'Merida';
-  src: url('https://raw.githubusercontent.com/ornicar/lila/master/public/font/merida.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}
-
-* {
-  box-sizing: border-box;
-}
-
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #111827;
-  color: #ffffff;
-  margin: 0;
+  background-color: #12110f; /* Black as dominant background */
+  color: #e8e7e5; /* White for text */
 }
 
 h1, h2 {
@@ -24,10 +11,10 @@ h1, h2 {
 }
 
 .btn-primary {
-  padding: 0.75rem 2rem;
+  padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-weight: 500;
-  color: #ffffff;
+  color: #e8e7e5; /* White text */
   transition: all 0.3s ease;
   transform: scale(1);
   cursor: pointer;
@@ -40,260 +27,292 @@ h1, h2 {
 
 .btn-primary:focus {
   outline: none;
-  box-shadow: 0 0 0 2px #1f2937, 0 0 0 4px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0 2px #12110f, 0 0 0 4px #57b0d2; /* Black outline, blue focus */
 }
 
 .btn-green {
-  background: linear-gradient(to right, #22c55e, #059669);
+  background: linear-gradient(to right, #dab354, #c9314a); /* Yellow to red */
 }
 
 .btn-green:hover {
-  background: linear-gradient(to right, #16a34a, #047857);
+  background: linear-gradient(to right, #c7a046, #b82941); /* Darker yellow to red */
 }
 
 .btn-green:focus {
-  box-shadow: 0 0 0 2px #1f2937, 0 0 0 4px #22c55e;
+  box-shadow: 0 0 0 2px #12110f, 0 0 0 4px #dab354; /* Black outline, yellow focus */
 }
 
 .btn-gray {
-  background: linear-gradient(to right, #6b7280, #4b5563);
+  color:#0a0908;
+  background: linear-gradient(to right, #e8e7e5, #dab354); /* White to black */
 }
 
 .btn-gray:hover {
-  background: linear-gradient(to right, #4b5563, #374151);
+  background: linear-gradient(to right, #d0cfcd, #dbb65b); /* Darker white to black */
 }
 
 .btn-gray:focus {
-  box-shadow: 0 0 0 2px #1f2937, 0 0 0 4px #6b7280;
+  box-shadow: 0 0 0 2px #12110f, 0 0 0 4px #e8e7e5; /* Black outline, white focus */
+}
+
+.btn-blue {
+  background: linear-gradient(to right, #57b0d2, #dab354); /* Blue to yellow */
+}
+
+.btn-blue:hover {
+  background: linear-gradient(to right, #4a9abb, #c7a046); /* Darker blue to yellow */
+}
+
+.btn-blue:focus {
+  box-shadow: 0 0 0 2px #12110f, 0 0 0 4px #57b0d2; /* Black outline, blue focus */
+}
+
+.btn-yellow {
+  background: linear-gradient(to right, #dab354, #e8e7e5); /* Yellow to white */
+}
+
+.btn-yellow:hover {
+  background: linear-gradient(to right, #c7a046, #d0cfcd); /* Darker yellow to white */
+}
+
+.btn-yellow:focus {
+  box-shadow: 0 0 0 2px #12110f, 0 0 0 4px #dab354; /* Black outline, yellow focus */
+}
+
+.btn-red {
+  background: linear-gradient(to right, #c9314a, #12110f); /* Red to black */
+}
+
+.btn-red:hover {
+  background: linear-gradient(to right, #b82941, #0a0908); /* Darker red to black */
+}
+
+.btn-red:focus {
+  box-shadow: 0 0 0 2px #12110f, 0 0 0 4px #c9314a; /* Black outline, red focus */
+}
+
+.btn-purple {
+  background: linear-gradient(to right, #57b0d2, #c9314a); /* Blue to red */
+}
+
+.btn-purple:hover {
+  background: linear-gradient(to right, #4a9abb, #b82941); /* Darker blue to red */
+}
+
+.btn-purple:focus {
+  box-shadow: 0 0 0 2px #12110f, 0 0 0 4px #57b0d2; /* Black outline, blue focus */
 }
 
 .card {
-  background-color: rgba(31, 41, 55, 0.8);
-  backdrop-filter: blur(20px);
-  border-radius: 1rem;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-  padding: 1rem;
-  border: 1px solid #4b5563;
+  background-color: #12110f; /* Black */
+  backdrop-filter: blur(8px);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px rgba(18, 17, 15, 0.3); /* Black shadow */
+  padding: 1.5rem;
+  border: 1px solid #57b0d2; /* Blue border */
+}
+.lunar-bg {
+  /* width: 100vw;
+  height: 100vh; */
+  background-color: #12110f;
+  position: relative;
+} 
+
+
+.lunar-bg::before {
+  content: '';
+  position: fixed; 
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 672px;
+  height: 100%;
+  background-image: url('./assets/logo_LE.svg');
+  background-repeat: repeat;
+  background-size: 30px 30px;
+  opacity: 0.5;
+  z-index: 0; 
+  pointer-events: none;
+} 
+
+.moonstone {
+  font-size: 1.875rem;
+  text-shadow: 0 0 8px rgba(218, 179, 84, 0.5); /* Yellow glow */
+  transition: all 0.3s ease;
+}
+
+.moonstone:hover {
+  transform: scale(1.1);
+}
+
+.seat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  color: #e8e7e5; /* White text */
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 1px solid #dab354; /* Yellow border */
+}
+
+.seat-main {
+  background-color: #57b0d2; /* Blue */
+}
+
+.seat-main:hover {
+  background-color: #4a9abb; /* Darker blue */
+}
+
+.seat-side {
+  background-color: #c9314a; /* Red */
+  height: 100%;
+}
+
+.seat-side:hover {
+  background-color: #b82941; /* Darker red */
+}
+
+.seat-selected {
+  background-color: #dab354; /* Yellow */
+  transition: background-color 0.3s ease;
+}
+
+.seat-selected:hover {
+  background-color: #c7a046; /* Darker yellow */
+}
+
+.seat-highlighted {
+  background-color: #57b0d2; /* Blue */
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.seat-highlighted:hover {
+  background-color: #4a9abb; /* Darker blue */
+}
+
+.input-field {
+  padding: 0.5rem 1rem;
+  background-color: rgba(18, 17, 15, 0.5); /* Semi-transparent black */
+  color: #e8e7e5; /* White text */
+  border: 1px solid #57b0d2; /* Blue border */
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #dab354; /* Yellow border */
+  box-shadow: 0 0 0 2px #dab354; /* Yellow shadow */
+}
+
+.tambour {
+  background: linear-gradient(to bottom, #12110f, #12110f); /* Black gradient */
+  border-radius: 0.5rem;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+  border: 2px solid #57b0d2; /* Blue border */
+  height: 3rem;
+  box-shadow: inset 0 0 4px rgba(18, 17, 15, 0.3); /* Black shadow */
+  position: relative;
+}
+
+.tambour::after {
+  content: '';
+  position: absolute;
+  bottom: -0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1rem;
+  height: 0.5rem;
+  background-color: #12110f; /* Black */
+  border: 2px solid #57b0d2; /* Blue border */
+  border-radius: 0.2rem;
+  box-shadow: 0 2px 4px rgba(18, 17, 15, 0.2); /* Black shadow */
+}
+
+.corridor {
+  background-color: rgba(232, 231, 229, 0.5); /* Semi-transparent white */
+  width: 5rem;
+  border-radius: 0.25rem;
+}
+
+.table {
+  background-color: #12110f; /* Black */
+  border-radius: 0.25rem;
+  height: 1.5rem;
+  width: 3rem;
+  margin-left: 0;
+}
+
+.seat-block {
+  border: 1px solid #57b0d2; /* Blue border */
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+  margin: 0.25rem;
+  background-color: rgba(18, 17, 15, 0.5); /* Semi-transparent black */
+  height: 10rem;
+}
+
+.seat-block.main-row {
+  width: 12rem;
+}
+
+.seat-block.side-row {
+  width: 4rem;
+}
+
+.main-row-container {
+  width: 12rem;
+}
+
+.side-row-container {
+  width: 4rem;
+}
+
+.carriage-container {
+  max-width: 36rem;
   margin: 0 auto;
 }
 
-.lunar-bg {
-  background: linear-gradient(to bottom, #111827, #1e1b4b);
-  background-image: url('https://via.placeholder.com/1920x1080?text=Starry+Sky');
-  background-size: cover;
-  background-attachment: fixed;
-}
-
-.chessboard-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: auto;
-  padding: 0;
-  margin: 0;
-  padding-left: 3rem; 
-}
-
-.chessboard {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  width: 100%;
-  max-width: 600px;
-  height: calc(600px * 3);
-  gap: 0;
-  border: none;
-  padding: 0;
-  margin: 0;
-  background: linear-gradient(to bottom, #1e1b4b, #111827);
-  box-sizing: border-box;
-  border-spacing: 0;
-  border-collapse: collapse;
-  border-radius: 1rem;
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.8), 0 0 40px rgba(147, 197, 253, 0.6);
-  background-image: url('https://via.placeholder.com/600x1800?text=Starry+Cosmic');
-  background-size: cover;
-  border: 2px solid transparent;
-  border-image: linear-gradient(to right, #6366f1, #93c5fd) 1;
-}
-
-.square {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 1/1;
-  position: relative;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-  border: none;
-}
-
-.square-light {
-  background-color: rgba(229, 231, 235, 0.2);
-  backdrop-filter: blur(4px);
-}
-
-.square-dark {
-  background-color: rgba(75, 85, 99, 0.2);
-  backdrop-filter: blur(4px);
-}
-
-.piece {
-  width: 100%;
-  height: 100%;
-  display: block;
-  text-align: center;
-  line-height: 1;
-  font-family: 'Merida', sans-serif;
-  user-select: none;
-}
-
-.merida-rook::before {
-  content: '\2656';
-  font-size: 200px; 
-  display: block;
-  line-height: 1;
-}
-
-.merida-bishop::before {
-  content: '\2657';
-  font-size: 200px; 
-  display: block;
-  line-height: 1;
-}
-
-.rank-label, .file-label {
-  position: absolute;
-  font-size: 1.6rem;
-  color: #c7d2fe;
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-}
-
-.rank-label {
-  left: -2.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.file-label {
-  bottom: -3rem;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.loss-modal {
-  background-color: rgba(31, 41, 55, 0.8);
-  backdrop-filter: blur(20px);
-  border-radius: 1rem;
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.8), 0 0 40px rgba(147, 197, 253, 0.6);
-  padding: 2rem;
-  border: 1px solid #4b5563;
-  text-align: center;
-  max-width: 90%;
-  width: 400px;
-}
-
-@media (max-width: 400px) {
-  .card {
-    padding: 0.5rem;
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
   }
-
-  .chessboard-container {
-    width: 100%;
-    height: auto;
-    padding: 0;
-    padding-left: 2.5rem;
-  }
-
-  .chessboard {
-    max-width: none;
-    width: 95vw;
-    height: calc(95vw * 3);
-    border-radius: 0.75rem;
-  }
-
-  .square {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 1/1;
-  }
-
-  .merida-rook::before, .merida-bishop::before {
-    font-size: calc(95vw / 3); 
-  }
-
-  .rank-label, .file-label {
-    font-size: 1.2rem;
-    left: -2rem;
-  }
-
-  .file-label {
-    bottom: -2.5rem;
-  }
-
-  .loss-modal {
-    width: 90%;
-    padding: 1.5rem;
+  50% {
+    opacity: 0.5;
   }
 }
-
 
 @media (max-width: 768px) {
   .card {
-    padding: 0.75rem;
+    padding: 1rem;
   }
-
-  .chessboard-container {
-    padding-left: 2.5rem;
+  .seat {
+    font-size: 0.75rem;
   }
-
-  .chessboard {
-    max-width: 450px;
-    width: 100%;
-    height: calc(450px * 3);
+  .btn-primary {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.875rem;
   }
-
-  .square {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 1/1;
+  .input-field {
+    width: 8rem;
+    font-size: 0.875rem;
   }
-
-  .merida-rook::before, .merida-bishop::before {
-    font-size: 150px; 
+  .seat-block.main-row {
+    width: 10rem;
   }
-
-  .loss-modal {
-    width: 80%;
+  .seat-block.side-row {
+    width: 3.5rem;
   }
-}
-
-
-@media (max-width: 500px) {
-  .chessboard-container {
-    padding-left: 2.5rem;
+  .main-row-container {
+    width: 10rem;
   }
-
-  .chessboard {
-    max-width: 360px;
-    width: 100%;
-    height: calc(360px * 3);
+  .side-row-container {
+    width: 3.5rem;
   }
-
-  .square {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 1/1;
-  }
-
-  .merida-rook::before, .merida-bishop::before {
-    font-size: 120px; 
+  .carriage-container {
+    max-width: 28rem;
   }
 }
